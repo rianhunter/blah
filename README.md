@@ -65,9 +65,9 @@ See [releases](https://gitlab.com/wolfre/cxadc-clock-generator-audio-adc/-/relea
 # License
 
 The content of this repository is under various licenses.
-The PCB parts are generally under *Creative Commons Attribution-ShareAlike 4.0*,
-and the source code is under *TBD*.
-For details see the individual *LICENSE.md* files in the respective folders they apply to.
+The PCB parts are generally under *Creative Commons Attribution-ShareAlike 4.0*, but contains external sources (with compatible licenses).
+The source code is under 3-Clause BSD, but contains external sources (with compatible licenses).
+For details see the individual *LICENSE\** files in the respective folders they apply to, firmware zip packages contain a copy of all the applicable license files.
 
 [cxadc]: https://github.com/happycube/cxadc-linux3/
 [pi-pico]: https://www.raspberrypi.com/products/raspberry-pi-pico/
