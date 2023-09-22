@@ -21,4 +21,4 @@ CI_PIPELINE_URL: $CI_PIPELINE_URL
 CI_JOB_URL: $CI_JOB_URL
 SEMVER: $SEMVER
 COMMIT: $CI_COMMIT_SHA
-ISO_8601_DATE: $(date --iso-8601=seconds)" > "$DIR_FIRMWARE/src/build-info.txt"
+ISO_8601_DATE: $(date --iso-8601=seconds)" > "$DIR_FIRMWARE/build/build-info.txt"

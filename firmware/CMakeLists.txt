@@ -33,6 +33,4 @@ endif()
 #set(TINYUSB_FAMILY_PROJECT_NAME_PREFIX "tinyusb_dev_")
 #add_subdirectory(${PICO_TINYUSB_PATH}/examples/device tinyusb_device_examples)
 
-add_subdirectory("src")
-
-
+add_subdirectory("src" "build")
