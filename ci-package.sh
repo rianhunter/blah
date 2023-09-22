@@ -11,10 +11,12 @@ mkdir -p "$output_dir"
 
 
 cmake_exe_name=firmware
-mv_or_die "$DIR_FIRMWARE/src/${cmake_exe_name}.elf" "$output_dir/firmware-${SEMVER}.elf"
-mv_or_die "$DIR_FIRMWARE/src/${cmake_exe_name}.uf2" "$output_dir/firmware-${SEMVER}.uf2"
-cp_or_die "$DIR_FIRMWARE/src/build-info.txt" "$output_dir/"
+mv_or_die "$DIR_FIRMWARE/build/${cmake_exe_name}.elf" "$output_dir/firmware-${SEMVER}.elf"
+mv_or_die "$DIR_FIRMWARE/build/${cmake_exe_name}.uf2" "$output_dir/firmware-${SEMVER}.uf2"
+cp_or_die "$DIR_FIRMWARE/build/build-info.txt" "$output_dir/"
 cp_or_die "$DIR_FIRMWARE/LICENSE" "$output_dir/LICENSE-firmware.txt"
+cp_or_die "$DIR_FIRMWARE/src/libsi5351/LICENSE" "$output_dir/LICENSE-libsi5351.txt"
+cp_or_die "$DIR_FIRMWARE/src/libsi5351/README.md" "$output_dir/NOTE-libsi5351.md"
 cp_or_die "$DIR_FIRMWARE/pico-sdk/LICENSE.TXT" "$output_dir/LICENSE-pico-sdk.txt"
 cp_or_die "$DIR_FIRMWARE/pico-sdk/lib/tinyusb/LICENSE" "$output_dir/LICENSE-tinyusb.txt"
 

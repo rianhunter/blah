@@ -25,3 +25,4 @@ resources
 **.bkp
 **.dtmp
 .~lock.*
+build
