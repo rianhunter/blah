@@ -29,7 +29,7 @@ The Pi controls the clock generator and also implements a USB audio (UAC) device
 The UAC device outputs the captured samples from the [PCM1802 ADC][ali-pcm1802-search], in addition to a 3rd channel that samples a GPIO pin.
 This GPIO pin can be connected to the head switching signal of a VHS player, for later automatic synchronization.
 
-![render](hardware/main-board/render-rev-a.png)
+![render](hardware/main-board/render-rev-b.png)
 
 *TODO build*
 
@@ -53,6 +53,7 @@ PCB revision overview:
   - Revision B - first public release
 - Clock generator main board
   - Revision A - first public release
+  - Revision B - fixes the IO VDD for Si5351, which should be 3.3V, Rev A erroneously had it at VSys
 
 ## Changelog
 
