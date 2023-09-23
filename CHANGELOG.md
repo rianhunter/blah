@@ -9,7 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Firmware build with pipeline and packaging
+- PCB - Clock generator main board - Rev B (IO VDD for Si5351 should be 3.3V instead of VSys)
+- FW - Setup fixed 40 Mhz output 
+- FW - Add Si5351 Adafruit library and convert it to Pi Pico SDK C from C++ Arduino
+- FW - Firmware build with pipeline and packaging
 
 ## [0.0.1] - 2023-09-16
 
