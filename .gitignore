@@ -1,1 +1,4 @@
 **/*.orig
+**/*.kate-swp
+**/*.dtmp
+**/*.bkp

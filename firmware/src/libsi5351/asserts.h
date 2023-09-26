@@ -1,6 +1,7 @@
-/*!
- * @file asserts.h
- */
+// SPDX-License-Identifier: BSD-3-Clause
+// Copyright (c) 2014 Adafruit Industries
+// Copyright (c) 2023 Rene Wolf
+
 #ifndef _SI5351_ASSERTS_H_
 #define _SI5351_ASSERTS_H_
 
