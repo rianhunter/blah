@@ -1,3 +1,7 @@
+// SPDX-License-Identifier: BSD-3-Clause
+// Copyright (c) 2014 Adafruit Industries
+// Copyright (c) 2023 Rene Wolf
+
 // @file     Adafruit_SI5351.cpp
 // 
 // @mainpage Adafruit Si5351 Library
