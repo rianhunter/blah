@@ -13,6 +13,8 @@ The project consists of 3 main components:
 The two PCBs can be manufactured with [JLCPCB][jlcpcb] cheaply, and assembled easily with basic soldering tools.
 If you choose to order from JLC, have a [look here](hardware/jlc-2023-09-order-example.png) for the specific settings.
 
+Have a look in the [mechanical section](mechanical) for some 3D printable parts as well.
+
 ## System overview
 
 ![system diagram](system-diagram.png)
