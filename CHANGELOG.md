@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.0] - 2023-10-02
 
 ### Added
 
@@ -38,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - PCB - Clock generator main board - Rev A
 - Initial documentation
 
-[unreleased]: https://gitlab.com/wolfre/cxadc-clock-generator-audio-adc/-/compare/v0.1.0...main
+[unreleased]: https://gitlab.com/wolfre/cxadc-clock-generator-audio-adc/-/compare/v0.2.0...main
+[0.2.0]: https://gitlab.com/wolfre/cxadc-clock-generator-audio-adc/-/compare/v0.1.0...v0.2.0
 [0.1.0]: https://gitlab.com/wolfre/cxadc-clock-generator-audio-adc/-/compare/v0.0.1...v0.1.0
 [0.0.1]: https://gitlab.com/wolfre/cxadc-clock-generator-audio-adc/-/tree/v0.0.1
