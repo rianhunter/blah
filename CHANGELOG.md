@@ -7,18 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+
+### Added
+
+- Doc - Initial build and install guide
+- Firmware - Implement UAC2 device to control Si5351 clock generator, only dummy data returned, PCM1802 is not yet used
+- Mechanical - Add a simple 3D printable box to contain the clock generator
+
 ### Fixed
 
-- FW - Implement UAC2 device to control Si5351 clock generator, only dummy data returned, PCM1802 is not yet used
 - PCB - Clock generator main board - Rev C (3.3V from PCM1802 erroneously driven by Pi Pico, should be open)
 
 ## [0.1.0] - 2023-09-24
 
 ### Added
 
-- FW - Setup fixed 40 Mhz output
-- FW - Add Si5351 Adafruit library and convert it to Pi Pico SDK C from C++ Arduino
-- FW - Firmware build with pipeline and packaging
+- Firmware - Setup fixed 40 Mhz output
+- Firmware - Add Si5351 Adafruit library and convert it to Pi Pico SDK C from C++ Arduino
+- Firmware - Firmware build with pipeline and packaging
 
 ### Fixed
 
