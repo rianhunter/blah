@@ -47,23 +47,27 @@ char const* string_desc_arr [] =
 	#define STRD_IDX_INPUT          5
 	"PCM1802",
 	
-	#define STRD_IDX_INPUT_20       6
+	#define STRD_IDX_INPUT_5        6
 	"CXADC-"CLOCK_GEN_CXADC_CLOCK_F0_STR,
-	#define STRD_IDX_INPUT_28       7
+	#define STRD_IDX_INPUT_10       7
 	"CXADC-"CLOCK_GEN_CXADC_CLOCK_F1_STR,
-	#define STRD_IDX_INPUT_40       8
+	#define STRD_IDX_INPUT_20       8
 	"CXADC-"CLOCK_GEN_CXADC_CLOCK_F2_STR,
-	#define STRD_IDX_INPUT_50       9
+	#define STRD_IDX_INPUT_28       9
 	"CXADC-"CLOCK_GEN_CXADC_CLOCK_F3_STR,
+	#define STRD_IDX_INPUT_40       10
+	"CXADC-"CLOCK_GEN_CXADC_CLOCK_F4_STR,
+	#define STRD_IDX_INPUT_50       11
+	"CXADC-"CLOCK_GEN_CXADC_CLOCK_F5_STR,
 	
-	#define STRD_IDX_SELECT_0       10
+	#define STRD_IDX_SELECT_0       12
 	"CXADC-Clock 0 Select",
-	#define STRD_IDX_SELECT_1       11
+	#define STRD_IDX_SELECT_1       13
 	"CXADC-Clock 1 Select",
 	
-	#define STRD_IDX_OUT_0          12
+	#define STRD_IDX_OUT_0          14
 	"CXADC-Clock 0 Out",
-	#define STRD_IDX_OUT_1          13
+	#define STRD_IDX_OUT_1          15
 	"CXADC-Clock 1 Out",
 };
 
@@ -197,12 +201,14 @@ uint8_t const desc_configuration[] =
 			/* Output Terminal Descriptor(4.7.2.5) */\
 			TUD_AUDIO_DESC_OUTPUT_TERM(/*_termid*/ USB_DESCRIPTORS_ID_OUTPUT, /*_termtype*/ AUDIO_TERM_TYPE_USB_STREAMING, /*_assocTerm*/ USB_DESCRIPTORS_ID_INPUT, /*_srcid*/ USB_DESCRIPTORS_ID_INPUT, /*_clkid*/ USB_DESCRIPTORS_ID_CLOCK, /*_ctrl*/ 0x0000, /*_stridx*/ 0x00),\
 			\
+			TUD_AUDIO_DESC_INPUT_TERM(/*_termid*/ USB_DESCRIPTORS_ID_INPUT_5,  /*_termtype*/ AUDIO_TERM_TYPE_IO_EMBEDDED_UNDEFINED, /*_assocTerm*/ 0, /*_clkid*/ USB_DESCRIPTORS_ID_CLOCK, /*_nchannelslogical*/ 1, /*_channelcfg*/ AUDIO_CHANNEL_CONFIG_NON_PREDEFINED, /*_idxchannelnames*/ 0x00, /*_ctrl*/ 0x0000, /*_stridx*/ STRD_IDX_INPUT_5),\
+			TUD_AUDIO_DESC_INPUT_TERM(/*_termid*/ USB_DESCRIPTORS_ID_INPUT_10, /*_termtype*/ AUDIO_TERM_TYPE_IO_EMBEDDED_UNDEFINED, /*_assocTerm*/ 0, /*_clkid*/ USB_DESCRIPTORS_ID_CLOCK, /*_nchannelslogical*/ 1, /*_channelcfg*/ AUDIO_CHANNEL_CONFIG_NON_PREDEFINED, /*_idxchannelnames*/ 0x00, /*_ctrl*/ 0x0000, /*_stridx*/ STRD_IDX_INPUT_10),\
 			TUD_AUDIO_DESC_INPUT_TERM(/*_termid*/ USB_DESCRIPTORS_ID_INPUT_20, /*_termtype*/ AUDIO_TERM_TYPE_IO_EMBEDDED_UNDEFINED, /*_assocTerm*/ 0, /*_clkid*/ USB_DESCRIPTORS_ID_CLOCK, /*_nchannelslogical*/ 1, /*_channelcfg*/ AUDIO_CHANNEL_CONFIG_NON_PREDEFINED, /*_idxchannelnames*/ 0x00, /*_ctrl*/ 0x0000, /*_stridx*/ STRD_IDX_INPUT_20),\
 			TUD_AUDIO_DESC_INPUT_TERM(/*_termid*/ USB_DESCRIPTORS_ID_INPUT_28, /*_termtype*/ AUDIO_TERM_TYPE_IO_EMBEDDED_UNDEFINED, /*_assocTerm*/ 0, /*_clkid*/ USB_DESCRIPTORS_ID_CLOCK, /*_nchannelslogical*/ 1, /*_channelcfg*/ AUDIO_CHANNEL_CONFIG_NON_PREDEFINED, /*_idxchannelnames*/ 0x00, /*_ctrl*/ 0x0000, /*_stridx*/ STRD_IDX_INPUT_28),\
 			TUD_AUDIO_DESC_INPUT_TERM(/*_termid*/ USB_DESCRIPTORS_ID_INPUT_40, /*_termtype*/ AUDIO_TERM_TYPE_IO_EMBEDDED_UNDEFINED, /*_assocTerm*/ 0, /*_clkid*/ USB_DESCRIPTORS_ID_CLOCK, /*_nchannelslogical*/ 1, /*_channelcfg*/ AUDIO_CHANNEL_CONFIG_NON_PREDEFINED, /*_idxchannelnames*/ 0x00, /*_ctrl*/ 0x0000, /*_stridx*/ STRD_IDX_INPUT_40),\
 			TUD_AUDIO_DESC_INPUT_TERM(/*_termid*/ USB_DESCRIPTORS_ID_INPUT_50, /*_termtype*/ AUDIO_TERM_TYPE_IO_EMBEDDED_UNDEFINED, /*_assocTerm*/ 0, /*_clkid*/ USB_DESCRIPTORS_ID_CLOCK, /*_nchannelslogical*/ 1, /*_channelcfg*/ AUDIO_CHANNEL_CONFIG_NON_PREDEFINED, /*_idxchannelnames*/ 0x00, /*_ctrl*/ 0x0000, /*_stridx*/ STRD_IDX_INPUT_50),\
-			TUD_AUDIO_DESC_SELECTOR_UNIT_4(/*_bUnitID*/ USB_DESCRIPTORS_ID_SELECT_CLK0, /*_baSourceID1*/ USB_DESCRIPTORS_ID_INPUT_20, /*_baSourceID2*/ USB_DESCRIPTORS_ID_INPUT_28, /*_baSourceID3*/ USB_DESCRIPTORS_ID_INPUT_40, /*_baSourceID4*/ USB_DESCRIPTORS_ID_INPUT_50, /*_bmControls*/ (AUDIO_CTRL_RW << 0), /*_iSelector*/ STRD_IDX_SELECT_0), \
-			TUD_AUDIO_DESC_SELECTOR_UNIT_4(/*_bUnitID*/ USB_DESCRIPTORS_ID_SELECT_CLK1, /*_baSourceID1*/ USB_DESCRIPTORS_ID_INPUT_20, /*_baSourceID2*/ USB_DESCRIPTORS_ID_INPUT_28, /*_baSourceID3*/ USB_DESCRIPTORS_ID_INPUT_40, /*_baSourceID4*/ USB_DESCRIPTORS_ID_INPUT_50, /*_bmControls*/ (AUDIO_CTRL_RW << 0), /*_iSelector*/ STRD_IDX_SELECT_1), \
+			TUD_AUDIO_DESC_SELECTOR_UNIT_6(/*_bUnitID*/ USB_DESCRIPTORS_ID_SELECT_CLK0, /*_baSourceID1*/ USB_DESCRIPTORS_ID_INPUT_5, /*_baSourceID2*/ USB_DESCRIPTORS_ID_INPUT_10, /*_baSourceID3*/ USB_DESCRIPTORS_ID_INPUT_20, /*_baSourceID4*/ USB_DESCRIPTORS_ID_INPUT_28, /*_baSourceID5*/ USB_DESCRIPTORS_ID_INPUT_40, /*_baSourceID6*/ USB_DESCRIPTORS_ID_INPUT_50, /*_bmControls*/ (AUDIO_CTRL_RW << 0), /*_iSelector*/ STRD_IDX_SELECT_0), \
+			TUD_AUDIO_DESC_SELECTOR_UNIT_6(/*_bUnitID*/ USB_DESCRIPTORS_ID_SELECT_CLK1, /*_baSourceID1*/ USB_DESCRIPTORS_ID_INPUT_5, /*_baSourceID2*/ USB_DESCRIPTORS_ID_INPUT_10, /*_baSourceID3*/ USB_DESCRIPTORS_ID_INPUT_20, /*_baSourceID4*/ USB_DESCRIPTORS_ID_INPUT_28, /*_baSourceID5*/ USB_DESCRIPTORS_ID_INPUT_40, /*_baSourceID6*/ USB_DESCRIPTORS_ID_INPUT_50, /*_bmControls*/ (AUDIO_CTRL_RW << 0), /*_iSelector*/ STRD_IDX_SELECT_1), \
 			TUD_AUDIO_DESC_OUTPUT_TERM(/*_termid*/ USB_DESCRIPTORS_ID_OUTPUT_CLK0, /*_termtype*/ AUDIO_TERM_TYPE_IO_EMBEDDED_UNDEFINED, /*_assocTerm*/ 0, /*_srcid*/ USB_DESCRIPTORS_ID_SELECT_CLK0, /*_clkid*/ USB_DESCRIPTORS_ID_CLOCK, /*_ctrl*/ 0x0000, /*_stridx*/ STRD_IDX_OUT_0),\
 			TUD_AUDIO_DESC_OUTPUT_TERM(/*_termid*/ USB_DESCRIPTORS_ID_OUTPUT_CLK1, /*_termtype*/ AUDIO_TERM_TYPE_IO_EMBEDDED_UNDEFINED, /*_assocTerm*/ 0, /*_srcid*/ USB_DESCRIPTORS_ID_SELECT_CLK1, /*_clkid*/ USB_DESCRIPTORS_ID_CLOCK, /*_ctrl*/ 0x0000, /*_stridx*/ STRD_IDX_OUT_1),\
 			

@@ -212,7 +212,10 @@ With your scope check that the following default frequencies are generated:
 - Clock 1 - 28.6 MHz
 - Clock 2 - 12.288 MHz
 
-If these clock outputs look reasonable, this concludes the firmware installation.
+![clock0-28.6mhz-ok.png](clock0-28.6mhz-ok.png)
+
+The image above show how the 28.6 MHz output on clock 0 should look.
+If all the clock outputs look reasonable, this concludes the firmware installation.
 You can move on to prepare the CX cards.
 
 ### Installation - adapter - *VT610EX Rev:SC3A VTImage 19.07* card
