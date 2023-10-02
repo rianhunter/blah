@@ -1,0 +1,97 @@
+<mxfile host="Electron" modified="2023-10-01T17:31:13.751Z" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/22.0.0 Chrome/114.0.5735.289 Electron/25.8.3 Safari/537.36" etag="3Q2O8nHG8c_kmPzf6kEi" version="22.0.0" type="device">
+  <diagram name="Page-1" id="ynX_rBOGlqWeNjra2ChU">
+    <mxGraphModel dx="1195" dy="703" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="3300" pageHeight="2339" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="5ca7TMIfpuRCUTEkQYFn-14" value="pc box" style="locked=1;" parent="0" />
+        <mxCell id="5ca7TMIfpuRCUTEkQYFn-15" value="Some PC for RF capturing" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;dashed=1;strokeColor=#808080;align=left;verticalAlign=bottom;fontColor=#808080;" vertex="1" parent="5ca7TMIfpuRCUTEkQYFn-14">
+          <mxGeometry x="420" y="220" width="480" height="320" as="geometry" />
+        </mxCell>
+        <mxCell id="1" style="" parent="0" />
+        <mxCell id="5ca7TMIfpuRCUTEkQYFn-1" value="CX card0" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="440" y="240" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="5ca7TMIfpuRCUTEkQYFn-2" value="CX card1" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="440" y="360" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="5ca7TMIfpuRCUTEkQYFn-3" value="&amp;nbsp;RF Video&amp;nbsp;" style="endArrow=classic;html=1;rounded=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" target="5ca7TMIfpuRCUTEkQYFn-1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="280" y="280" as="sourcePoint" />
+            <mxPoint x="290" y="230" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="5ca7TMIfpuRCUTEkQYFn-4" value="&amp;nbsp;RF HIFI" style="endArrow=classic;html=1;rounded=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" target="5ca7TMIfpuRCUTEkQYFn-2">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="280" y="400" as="sourcePoint" />
+            <mxPoint x="450" y="290" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="5ca7TMIfpuRCUTEkQYFn-5" value="20MSPS 10Bit" style="endArrow=classic;html=1;rounded=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" edge="1" parent="1" source="5ca7TMIfpuRCUTEkQYFn-1" target="5ca7TMIfpuRCUTEkQYFn-6">
+          <mxGeometry x="0.1818" width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="670" y="440" as="sourcePoint" />
+            <mxPoint x="630" y="310" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="580" y="280" />
+              <mxPoint x="580" y="260" />
+            </Array>
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="5ca7TMIfpuRCUTEkQYFn-6" value="HDD" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="760" y="240" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="5ca7TMIfpuRCUTEkQYFn-7" value="10MSPS 8Bit" style="endArrow=classic;html=1;rounded=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.75;entryDx=0;entryDy=0;" edge="1" parent="1" source="5ca7TMIfpuRCUTEkQYFn-2" target="5ca7TMIfpuRCUTEkQYFn-6">
+          <mxGeometry x="0.4" width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="670" y="440" as="sourcePoint" />
+            <mxPoint x="720" y="390" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="580" y="400" />
+              <mxPoint x="580" y="300" />
+            </Array>
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="5ca7TMIfpuRCUTEkQYFn-8" value="ClockGen&lt;br&gt;+&lt;br&gt;Audio ADC" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#D80073;" vertex="1" parent="1">
+          <mxGeometry x="760" y="360" width="120" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="5ca7TMIfpuRCUTEkQYFn-9" value="Linear VHS Audio" style="endArrow=classic;html=1;rounded=0;entryX=0;entryY=0.75;entryDx=0;entryDy=0;" edge="1" parent="1" target="5ca7TMIfpuRCUTEkQYFn-8">
+          <mxGeometry x="-0.6667" width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="280" y="480" as="sourcePoint" />
+            <mxPoint x="720" y="390" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="5ca7TMIfpuRCUTEkQYFn-10" value="40MHz clock" style="endArrow=classic;html=1;rounded=1;exitX=0;exitY=0.25;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;fillColor=#d80073;strokeColor=#D80073;" edge="1" parent="1" source="5ca7TMIfpuRCUTEkQYFn-8" target="5ca7TMIfpuRCUTEkQYFn-1">
+          <mxGeometry x="0.1765" width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="670" y="440" as="sourcePoint" />
+            <mxPoint x="720" y="390" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="720" y="400" />
+              <mxPoint x="720" y="340" />
+              <mxPoint x="500" y="340" />
+            </Array>
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="5ca7TMIfpuRCUTEkQYFn-11" value="10MHz clock" style="endArrow=classic;html=1;rounded=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;fillColor=#d80073;strokeColor=#D80073;" edge="1" parent="1" source="5ca7TMIfpuRCUTEkQYFn-8" target="5ca7TMIfpuRCUTEkQYFn-2">
+          <mxGeometry x="0.0667" width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="670" y="440" as="sourcePoint" />
+            <mxPoint x="500" y="460" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="720" y="440" />
+              <mxPoint x="720" y="460" />
+              <mxPoint x="500" y="460" />
+            </Array>
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="5ca7TMIfpuRCUTEkQYFn-13" value="48kHz 16Bit stereo" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;fillColor=#d80073;strokeColor=#A50040;" edge="1" parent="1" source="5ca7TMIfpuRCUTEkQYFn-8" target="5ca7TMIfpuRCUTEkQYFn-6">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="670" y="440" as="sourcePoint" />
+            <mxPoint x="1140" y="690" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
