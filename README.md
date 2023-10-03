@@ -109,7 +109,7 @@ Those intermediate clock are then further divided to get the desired clock frequ
 PLL A is running in integer mode, which means only whole number multipliers are used, resulting in no added [jitter][jitter-wiki].
 Further more the subsequent "multi synth" dividers are also in integer mode, again resulting in no added [jitter][jitter-wiki].
 But this limits the clock outputs options to only frequencies that can be produced by one multiplication and one division with only whole numbers.
-Based on the 25 MHz source that is included on the [Si5351A][si5351-adafruit] board, this enables CXADC *sampling clocks of 5 MHz, 10 MHz, 20 MHz, 40 MHz and 50 MHz*.
+Based on the 25 MHz source that is included on the [Si5351A][si5351-adafruit] board, this enables CXADC *sampling clocks of 20 MHz, 40 MHz and 50 MHz*.
 The [PCM1802][pcm1802-product] needs a clock of 256 times the frequency of the desired output audio sampling rate.
 The PLL A path generates a 12 MHz output which results in an exact (without rounding error) *46875 Hz / 46.875 kHz* sample rate for the audio stream.
 This uncommon rate does not degrade the performance of the [PCM1802][pcm1802-product] ADC and offers analog bandwidth that is above CD quality.

@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Doc - Add example scope trace for 28.6 MHz clock to build and install guide
+
 ## [0.2.0] - 2023-10-02
 
 ### Added
