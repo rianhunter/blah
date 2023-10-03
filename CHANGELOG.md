@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Firmware - USB device descriptor now has correct SemVer in bcdDevice version field
+- Firmware - Implement PCM1802 data streaming and head switch GPIO sampling
 - Doc - Add example scope trace for 28.6 MHz clock to build and install guide
 
 ## [0.2.0] - 2023-10-02

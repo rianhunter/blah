@@ -10,6 +10,7 @@
 #include "pico/unique_id.h"
 #include "tusb.h"
 
+#include "build_info.h"
 #include "clock_gen.h"
 #include "dbg.h"
 #include "main1.h"
@@ -28,6 +29,9 @@ int main(void)
 
 	clock_gen_init();
 	clock_gen_default();
+	
+	dbg_say("Running firmware v" NFO_SEMVER_STR "\n");
+	dbg_say("Build from " NFO_GIT_SHA "\n");
 	
 	fifo_init();
 	

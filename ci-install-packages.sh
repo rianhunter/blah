@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# SPDX-License-Identifier: BSD-3-Clause
+# Copyright (c) 2023 Rene Wolf
+
 export DEBIAN_FRONTEND=noninteractive 
 
 apt update

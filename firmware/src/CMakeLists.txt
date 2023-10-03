@@ -1,7 +1,8 @@
+# SPDX-License-Identifier: BSD-3-Clause
+# Copyright (c) 2020 Raspberry Pi (Trading) Ltd.
+# Copyright (c) 2023 Rene Wolf
+
 cmake_minimum_required(VERSION 3.12)
-
-
-
 
 # https://stackoverflow.com/questions/25072485/cmake-add-all-sources-in-subdirectory-to-cmake-project
 aux_source_directory(${CMAKE_CURRENT_LIST_DIR} ALL_SRC)
@@ -18,7 +19,7 @@ target_include_directories(firmware PRIVATE ${CMAKE_CURRENT_LIST_DIR})
 
 
 
-target_link_libraries(firmware PRIVATE pico_stdlib hardware_i2c hardware_uart pico_multicore pico_unique_id tinyusb_device tinyusb_board)
+target_link_libraries(firmware PRIVATE pico_stdlib pico_multicore pico_unique_id hardware_i2c hardware_uart hardware_pio tinyusb_device tinyusb_board)
 
 
 pico_add_extra_outputs(firmware)

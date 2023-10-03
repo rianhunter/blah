@@ -238,7 +238,7 @@ uint8_t clock_gen_get_cxadc_sample_rate(uint8_t output)
 
 void clock_gen_set_cxadc_sample_rate(uint8_t output, uint8_t frequency_option)
 {
-	if( output == 0 || output == 1 && frequency_option < setup_cxadc_map_len)
+	if( (output == 0 || output == 1) && (frequency_option < setup_cxadc_map_len))
 	{
 		multisynth_setup* new_settings = setup_cxadc_map[frequency_option];
 		

@@ -69,31 +69,3 @@ void fifo_put_filled(usb_audio_buffer* buffer)
 {
 	queue_add_blocking(&pipe_full, &buffer);
 }
-
-#define FIFO_TOKEN 0x0C0FFEE0
-
-void fifo_set_token(usb_audio_buffer* buffer, fifo_token token)
-{
-	uint32_t* w = (uint32_t*)buffer;
-	
-	if( token == fifo_token_none )
-	{
-		w[0] = 0;
-	}
-	else
-	{
-		w[0] = FIFO_TOKEN;
-		w[1] = token;
-	}
-}
-
-fifo_token fifo_get_token(usb_audio_buffer* buffer)
-{
-	uint32_t* w = (uint32_t*)buffer;
-	if( w[0] != FIFO_TOKEN )
-		return fifo_token_none;
-	
-	return (fifo_token)w[1];
-}
-
-#undef FIFO_TOKEN
