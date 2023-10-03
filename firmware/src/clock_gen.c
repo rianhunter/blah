@@ -65,22 +65,6 @@ static multisynth_setup setup_12m288hz =
 
 
 
-static multisynth_setup setup_5mhz =
-{
-	.pllSource = SI5351_PLL_A,
-	.div = 120,
-	.num = 0,
-	.denom = 1,
-	.r_div = SI5351_R_DIV_1,
-};
-static multisynth_setup setup_10mhz =
-{
-	.pllSource = SI5351_PLL_A,
-	.div = 60,
-	.num = 0,
-	.denom = 1,
-	.r_div = SI5351_R_DIV_1,
-};
 static multisynth_setup setup_20mhz =
 { 
 	.pllSource = SI5351_PLL_A,
@@ -117,9 +101,7 @@ static multisynth_setup setup_50mhz =
 
 static multisynth_setup* setup_cxadc_map[] = 
 {
-	// NOTE this sequence must match the string descriptors
-	&setup_5mhz,
-	&setup_10mhz,
+	// NOTE this sequence must match the string descriptors and the sequence of inputs on the switches
 	&setup_20mhz,
 	&setup_28m6hz,
 	&setup_40mhz,
