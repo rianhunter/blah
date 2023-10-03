@@ -21,16 +21,5 @@ usb_audio_buffer* fifo_take_filled();
 usb_audio_buffer* fifo_try_take_filled();
 void              fifo_put_filled(usb_audio_buffer* buffer);
 
-typedef enum
-{
-	fifo_token_none,
-	fifo_token_start,
-	fifo_token_stop
-} fifo_token;
-
-void       fifo_set_token(usb_audio_buffer* buffer, fifo_token token);
-fifo_token fifo_get_token(usb_audio_buffer* buffer);
-
-
 #endif
 

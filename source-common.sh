@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: BSD-3-Clause
+# Copyright (c) 2023 Rene Wolf
 
 function die
 {
@@ -37,6 +39,11 @@ function detect_workspace
 detect_workspace
 DIR_FIRMWARE="$WORKSPACE/firmware"
 echo "WORKSPACE is '$WORKSPACE',  DIR_FIRMWARE is '$DIR_FIRMWARE'"
+
+DIR_FIRMWARE_BUILD="$DIR_FIRMWARE/build"
+FILE_BUILD_INFO_TXT="$DIR_FIRMWARE_BUILD/build-info.txt"
+FILE_BUILD_INFO_H="$DIR_FIRMWARE/src/build_info.h"
+FILE_BUILD_LOG="$DIR_FIRMWARE_BUILD/build.log"
 
 
 function detect_commit
@@ -131,4 +138,14 @@ function cp_or_die
 function mv_or_die
 {
 	mv "$1" "$2" || die "mv '$1' -> '$2' failed"
+}
+
+function running_on_ci
+{
+	# https://docs.gitlab.com/ee/ci/variables/predefined_variables.html
+	if [[ "$CI" == true ]] ; then
+		return 0
+	fi
+
+	return 1
 }

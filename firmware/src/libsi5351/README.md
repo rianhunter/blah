@@ -13,4 +13,5 @@ Check out the links above for our tutorials and wiring diagrams
 Written by Limor Fried/Ladyada for Adafruit Industries.
 BSD license, all text above must be included in any redistribution
 
-The original source from [GitHub](https://github.com/adafruit/Adafruit_Si5351_Library) is written in C++ for arduino, and has been converted to C for the Paspberry Pi Pico SDK.
+The original source on [GitHub](https://github.com/adafruit/Adafruit_Si5351_Library) is written in C++ for arduino.
+This has been converted to C for the Paspberry Pi Pico SDK by Rene Wolf.

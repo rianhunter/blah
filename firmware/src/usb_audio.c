@@ -171,7 +171,7 @@ bool tud_audio_get_req_entity_cb(uint8_t rhport, tusb_control_request_t const * 
 			if( p_request->bRequest == AUDIO_CS_REQ_RANGE )
 			{
 				uint8_t options_count;
-				uint32_t* options = clock_gen_get_adc_sample_rate_options(&options_count);
+				const uint32_t* options = clock_gen_get_adc_sample_rate_options(&options_count);
 				audio_control_range_4_n_t(options_count) sampleFreqRng; // Sample frequency range state
 				sampleFreqRng.wNumSubRanges = options_count;
 				for(uint8_t i=0; i<options_count; ++i)
@@ -235,6 +235,7 @@ bool tud_audio_tx_done_pre_load_cb(uint8_t rhport, uint8_t func_id, uint8_t ep_i
 	
 	if(audio_buffer == NULL)
 	{
+		//dbg_say("poll NULL\n");
 		tud_audio_write(NULL, 0);
 		return true;
 	}
@@ -256,6 +257,6 @@ bool tud_audio_set_itf_close_EP_cb(uint8_t rhport, tusb_control_request_t const 
 	(void) rhport;
 	(void) p_request;
 
-	dbg_say("c_ep\n");
+	dbg_say("close_EP\n");
 	return true;
 }

@@ -7,7 +7,7 @@
 #include "usb_descriptors.h"
 #include "dbg.h"
 #include "clock_gen.h"
-
+#include "build_info.h"
 
 //--------------------------------------------------------------------+
 // String Descriptors
@@ -41,8 +41,8 @@ char const* string_desc_arr [] =
 	#define STRD_IDX_SERIAL         3
 	usb_serial_number,
 	
-	#define STRD_IDX_IFACE          4
-	"UAC2",
+	#define STRD_IDX_VERSION        4
+	"v" NFO_SEMVER_STR,
 
 	#define STRD_IDX_INPUT          5
 	"PCM1802",
@@ -135,7 +135,7 @@ tusb_desc_device_t const desc_device =
 	// TODO request one here if this thing ever works https://pid.codes/howto/
 	.idVendor           = 0x1209,
 	.idProduct          = 0x0001,
-	.bcdDevice          = 0x0100,
+	.bcdDevice          = NFO_SEMVER_USB_DEV_BCD,
 
 	.iManufacturer      = STRD_IDX_MANUFACTURER,
 	.iProduct           = STRD_IDX_PRODUCT,
@@ -184,10 +184,10 @@ uint8_t const desc_configuration[] =
 	TUD_CONFIG_DESCRIPTOR(1, ITF_NUM_TOTAL, 0, (TUD_CONFIG_DESC_LEN + CFG_TUD_AUDIO * TUD_AUDIO_DESC_TOTAL_LEN), 0x00, 100),
 	
 	/* Standard Interface Association Descriptor (IAD) */\
-	TUD_AUDIO_DESC_IAD(/*_firstitfs*/ ITF_NUM_AUDIO_CONTROL, /*_nitfs*/ 0x02, /*_stridx*/ 0x00),\
+	TUD_AUDIO_DESC_IAD(/*_firstitfs*/ ITF_NUM_AUDIO_CONTROL, /*_nitfs*/ 0x02, /*_stridx*/ STRD_IDX_VERSION),\
 	
 		/* Standard AC Interface Descriptor(4.7.1) */\
-		TUD_AUDIO_DESC_STD_AC(/*_itfnum*/ ITF_NUM_AUDIO_CONTROL, /*_nEPs*/ 0x00, /*_stridx*/ STRD_IDX_IFACE),\
+		TUD_AUDIO_DESC_STD_AC(/*_itfnum*/ ITF_NUM_AUDIO_CONTROL, /*_nEPs*/ 0x00, /*_stridx*/ STRD_IDX_PRODUCT /* NOTE windows reports this as the device name, linux / ALSA uses the product everywhere */),\
 			/* Class-Specific AC Interface Header Descriptor(4.7.2) */\
 			TUD_AUDIO_DESC_CS_AC(/*_bcdADC*/ 0x0200, /*_category*/ AUDIO_FUNC_MICROPHONE, /*_totallen*/ TUD_AUDIO_DESC_CS_AC_LEN_TOTAL, /*_ctrl*/ AUDIO_CS_AS_INTERFACE_CTRL_LATENCY_POS),\
 			/* Clock Source Descriptor(4.7.2.1) */\
@@ -219,8 +219,9 @@ uint8_t const desc_configuration[] =
 			/* Type I Format Type Descriptor(2.3.1.6 - Audio Formats) */\
 			TUD_AUDIO_DESC_TYPE_I_FORMAT(USB_AUDIO_BYTES_PER_SAMPLE, (USB_AUDIO_BYTES_PER_SAMPLE*8)),\
 
+			/* "bInterval is used to specify the polling interval [...] expressed in frames, thus this equates to either 1ms for low/full speed devices and 125us for high speed devices." src: https://www.beyondlogic.org/usbnutshell/usb5.shtml */ \
 			/* Standard AS Isochronous Audio Data Endpoint Descriptor(4.10.1.1) */\
-			TUD_AUDIO_DESC_STD_AS_ISO_EP(/*_ep*/ (0x80 | EPNUM_AUDIO), /*_attr*/ (TUSB_XFER_ISOCHRONOUS | TUSB_ISO_EP_ATT_ASYNCHRONOUS | TUSB_ISO_EP_ATT_DATA), /*_maxEPsize*/ CFG_TUD_AUDIO_EP_SZ_IN, /*_interval*/ (CFG_TUSB_RHPORT0_MODE & OPT_MODE_HIGH_SPEED) ? 0x08 : 0x02),\
+			TUD_AUDIO_DESC_STD_AS_ISO_EP(/*_ep*/ (0x80 | EPNUM_AUDIO), /*_attr*/ (TUSB_XFER_ISOCHRONOUS | TUSB_ISO_EP_ATT_ASYNCHRONOUS | TUSB_ISO_EP_ATT_DATA), /*_maxEPsize*/ CFG_TUD_AUDIO_EP_SZ_IN, /*_interval*/ (CFG_TUSB_RHPORT0_MODE & OPT_MODE_HIGH_SPEED) ? 0x08 : 0x01),\
 				/* Class-Specific AS Isochronous Audio Data Endpoint Descriptor(4.10.1.2) */\
 				TUD_AUDIO_DESC_CS_AS_ISO_EP(/*_attr*/ AUDIO_CS_AS_ISO_DATA_EP_ATT_NON_MAX_PACKETS_OK, /*_ctrl*/ AUDIO_CTRL_NONE, /*_lockdelayunit*/ AUDIO_CS_AS_ISO_DATA_EP_LOCK_DELAY_UNIT_UNDEFINED, /*_lockdelay*/ 0x0000)
 };
