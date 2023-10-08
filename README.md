@@ -57,7 +57,8 @@ Read on to get all the details and find out how to build one yourself.
 ## Building one yourself
 
 The build and installation guide can be found [over here](build-guide/README.md).
-And have a look in the [mechanical section too](mechanical) for some (optional) 3D printable parts.
+Have a look in the [mechanical section too](mechanical) for some (optional) 3D printable parts.
+And once you built it, check out the [scripts](scripts) folder which holds some useful tool around using this project.
 
 ## System overview and architecture
 
