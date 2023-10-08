@@ -7,13 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.0] - 2023-10-08
+
 ### Added
 
+- Scripts - Add a script to capture all 3 streams in parallel
 - Mechanical - Add a PC bracket in 2 and 3 RCA jacks variant to accomodate PCM1802 ADC inputs and head switch signal
 - Mechanical - Add an optional mountable holder to the 3D printable box
 - Firmware - USB device descriptor now has correct SemVer in bcdDevice version field
 - Firmware - Implement PCM1802 data streaming and head switch GPIO sampling
 - Doc - Add example scope trace for 28.6 MHz clock to build and install guide
+
+### Fixed
+
+- Doc - Overview diagram was missing head-switch signal and wrongly stated 16Bit instead of 24Bit audio
 
 ## [0.2.0] - 2023-10-02
 
@@ -47,7 +54,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - PCB - Clock generator main board - Rev A
 - Initial documentation
 
-[unreleased]: https://gitlab.com/wolfre/cxadc-clock-generator-audio-adc/-/compare/v0.2.0...main
+[unreleased]: https://gitlab.com/wolfre/cxadc-clock-generator-audio-adc/-/compare/v1.0.0...main
+[1.0.0]: https://gitlab.com/wolfre/cxadc-clock-generator-audio-adc/-/compare/v0.2.0...v1.0.0
 [0.2.0]: https://gitlab.com/wolfre/cxadc-clock-generator-audio-adc/-/compare/v0.1.0...v0.2.0
 [0.1.0]: https://gitlab.com/wolfre/cxadc-clock-generator-audio-adc/-/compare/v0.0.1...v0.1.0
 [0.0.1]: https://gitlab.com/wolfre/cxadc-clock-generator-audio-adc/-/tree/v0.0.1

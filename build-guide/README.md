@@ -9,6 +9,12 @@ But the two main PCBs of this project need to be ordered with [JLCPCB][jlcpcb] a
 Don't worry though all SMD parts are rather large 0805, and ordering them with [JLCPCB][jlcpcb] is fast and cheap!
 The [hardware](../hardware) section of this project includes the full [KiCad][kicad] project files, so you can also generate gerbers for a different manufacturing house.
 
+If you are new to soldering electronics, learning about it is a bit beyond this guide.
+However you may want to start looking here, as these videos cover the things needed for this guide:
+- Branchus Creations Beginner's Guide to Soldering Electronics [Part 1](https://www.youtube.com/watch?v=M2Jf8cebwCs) and [Part 2](https://www.youtube.com/watch?v=BPuH1Z2npoQ)
+- Electronoobs [SMD Soldering Tutorial | Guide | Tools | Tecniques | Stencil](https://www.youtube.com/watch?v=fYInlAmPnGo)
+
+
 The steps covered here will assemble the electronic components and flash the firmware on the Raspberry Pi Pico.
 Mounting the finished build in your particular PC / setup is beyond the scope of this guide.
 You can however have a look in the [mechanical section](../mechanical) for some 3D printable parts that may suit your needs.
@@ -41,7 +47,7 @@ So put add something like 10% additional parts, but at least one extra component
 
 If you choose a manufacturing house other than [JLCPCB][jlcpcb], you already know what you need.
 The [releases section][releases] of this project holds the finished gerbers for ordering directly from [JLCPCB][jlcpcb].
-When ordering, you should check [these settings (valid as of Sep. 2023)](../hardware/jlc-2023-09-order-example.png).
+When ordering, you should check [these settings (valid as of Sep. 2023)](../hardware/jlc-2023-09-order-example.png) for both boards.
 The minimum quantity (as of Sep. 2023) is 5 per PCBs, so for a single clock gen with two [CXADC][cxadc] cards, you will have some spares.
 
 ## Building PCB 1 - VT610ex clock generator insert
