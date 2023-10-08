@@ -50,15 +50,19 @@ This extra audio ADC is also synchronously clocked from the same clock generator
 
 As an added bonus, the clock generator is programmable, so the output sample rates for the [CXADC][cxadc] cards can be changed!
 This can be configured during system runtime, via the same USB audio interface that also streams the [PCM1802 ADC][pcm1802-product] samples.
-And as one more (future) feature, it also contains an additional digital input, that can be connected to the head switch signal of your VHS player.
-This signal will be recorded along side the linear audio, (in the future) enabling even more automation to sync up all those streams.
+And as one more feature, it also contains an additional digital input, that can be connected to the head switch signal of your VHS player.
+This signal will be recorded along side the linear audio, enabling even more automation to sync up all those streams.
+
+![3ch-usb-recording.png](3ch-usb-recording.png)
+
+The above shows a 3ch recording as captured from the clock generator, a sine wave on the left, silence on the right, and a head-switch signal on the 3rd channel.
 Read on to get all the details and find out how to build one yourself.
 
 ## Building one yourself
 
 The build and installation guide can be found [over here](build-guide/README.md).
 Have a look in the [mechanical section too](mechanical) for some (optional) 3D printable parts.
-And once you built it, check out the [scripts](scripts) folder which holds some useful tool around using this project.
+And once you built it, check out the [scripts](scripts) folder which holds some useful tools an examples around using this project.
 
 ## System overview and architecture
 
