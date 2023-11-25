@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Scripts - Add a script to collect some information on a system to help trouble shoot
+
 ## [1.0.0] - 2023-10-08
 
 ### Added
