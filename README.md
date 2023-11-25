@@ -138,6 +138,7 @@ PCB revision overview:
 - VT610ex clock generator adapter
   - Revision A - never released
   - Revision B - first public release
+  - Revision C - some updates to the silkscreen and moved one via to get PcbWay support, otherwise identical to Revision C
 - Clock generator main board
   - Revision A - first public release
   - Revision B - fixes the IO VDD for Si5351, which should be 3.3V, Rev A erroneously had it at VSys
