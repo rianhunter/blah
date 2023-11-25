@@ -226,6 +226,10 @@ You can move on to prepare the CX cards.
 
 ### Installation - adapter - *VT610EX Rev:SC3A VTImage 19.07* card
 
+The following steps will remove the onboard quartz clock source and add the adapter board to hook up the clock gen.
+Beware that a CX card without a clock source will prevent a PC from booting!
+So after you removed the components you need to have an external clock source on your card if its plugged into your PC.
+
 This card has 4 components that need to be removed: Y1 (crystal), C22, C19, R12.
 The following image shows them marked in pink:
 
@@ -260,6 +264,172 @@ To test PCM1802 audio ADC capture, you can run `arecord -D hw:CARD=CXADCADCClock
 
 That's it you are ready for some sync RF capture!
 
+## Troubleshooting
+
+As with any complex system, you may encounter problems.
+The information in this section should help to find the cause for common problems when assembling the setup.
+Be aware that troubleshooting and debugging is also an art and improves with experience.
+So the guide and advise here can never catch all cases and you are encouraged to think about the steps you take.
+
+Notes:
+- Any commands shown are *case sensitive* so make sure to type them exactly as show here
+- The screw terminals on the mainboard are GND
+- The guide assumes you did check GND for continuity across all sub boards and to the USB connector
+- Have the Raspberry Pi Pico [pinout](https://www.raspberrypi.com/documentation/microcontrollers/raspberry-pi-pico.html) at hand for referencing pin locations
+
+With that out of the way, start by following the path in this diagram, details on relevant step are explained further down.
+Don't be intimidated by the size, just follow the arrows, start on the left :grin:.
+
+![troubleshoot-decisions.png](troubleshoot-decisions.png)
+
+If the diagram leads you in a loop then you may have a problem that is not covered here.
+You can look at the ["Other issues"][self-other-issue] section.
+
+### Flashing the Pi pico
+
+The Pi pico has a boot loader that cannot be overwritten.
+Have a look [here](https://www.okdo.com/getting-started/get-started-with-raspberry-pi-pico/) on how to flash it.
+You can download the mentioned [blink.uf2](https://datasheets.raspberrypi.com/soft/blink.uf2) example to check whether your Pi device is generally working.
+If you flashed the blink test, make sure to re-flash the clock gen firmware.
+The guide will generally assume you have the clock gen firmware installed.
+
+### Is the USB device visible?
+
+This tells you whether the USB enumeration (when a USB host discovers a USB device) was successful.
+Run `lsusb` as a normal user, check if the output contains this line:
+
+```
+Bus 002 Device 003: ID 1209:0001 Generic pid.codes Test PID
+```
+
+If yes, it means the host can talk to the clock gen.
+If no, then the USB communication is not working, either due to an electrical problem on the connection, or a non-working firmware on the Pi pico.
+
+### Look for shorts of the 5V on the PCM1802
+
+The following needs a multimeter, and the PCM1802 board unplugged from the mainboard.
+- confirm no continuity between the 5V and GND on the PCM1802 board.
+- confirm no continuity between the 5V / VBus on the Pi and GND.
+
+Remove any shorts / solder bridges you find.
+
+### Look for shorts of the 3.3V on the Si5351
+
+The following needs a multimeter, and the Si5351 board unplugged from the mainboard.
+- confirm no continuity between the Vin and GND on the Si5351 board.
+- confirm no continuity between the 3.3V on the Pi and GND.
+
+Remove any shorts / solder bridges you find.
+
+### Look for shorts on the mainboard
+
+The following needs a multimeter, and both the PCM1802 and Si5351 board unplugged from the mainboard.
+- confirm no continuity between the GND plane and any of the power pins on the Pi pico, PCM1802 and Si5351 connectors.
+
+Remove any shorts / solder bridges you find.
+
+### `arecord -L` / `sudo arecord -L` shows device?
+
+This tells you whether the ALSA sound system correctly detected the clock gen as a sound card.
+Run `arecord -L` as a normal user, check if the output contains these lines:
+
+```
+hw:CARD=CXADCADCClockGe,DEV=0
+    CXADC+ADC-ClockGen, USB Audio
+    Direct hardware device without any conversions
+```
+
+If they show up, everything is fine, if not retry with `sudo arecord -L`.
+If they show up now, it means your normal user misses the permissions to do audio capture.
+If they still don't show up, its another problem, that is not covered here.
+
+### Fix audio permissions
+
+This depends on the linux distribution you have.
+Under debian / ubuntu based OS, your user needs to be in the `audio` group to be able to capture or play audio.
+So add your user to the `audio` group, [see these steps](https://askubuntu.com/questions/79565/how-to-add-existing-user-to-an-existing-group).
+
+### Audio recording works?
+
+Run the following command:
+
+```bash
+arecord -D hw:CARD=CXADCADCClockGe -c 3 -r 46875 -f S24_3LE --samples=1000 test.wav
+```
+
+It should respond with only the following and produce a file called `test.wav` that is around 9kb in size.
+
+```
+Recording WAVE 'test.wav' : Signed 24 bit Little Endian in 3bytes, Rate 46875 Hz, Channels 3
+```
+
+If the outputs includes something like the following, then recording did not work as expected.
+
+```
+arecord: pcm_read:2221: read error: Input/output error
+```
+
+The above generic "read error: Input/output error" error can have multiple reasons.
+But it is a good indication that no data is coming from the PCM1802 sub board to the Pi.
+
+### Check Si5351 output 0/1/2
+
+The following check needs a [DSO][wiki-dso].
+You may be able to use a multimeter if it has a frequency counter that goes high enough.
+See ["Installation - firmware"][self-clk-wave] for expected wave form and frequency per output.
+If outputs 0 and/or 1 are connected to the adapter board, check the clock signal on both ends (mainboard and adapter board).
+
+### Look for shorts on data/clock lines between Si5351 and Pi.
+
+The following needs a multimeter, both Pi and Si5351 must be plugged onto the mainboard.
+Check continuity on the SCL and SDA lines from Si5351 to Pi.
+Check no continuity on the SCL and SDA lines to GND or 3.3V.
+Beware that the SCL and SDA lines have pull-ups, of a couple kOhms, so only a very low resistance (less than 10 Ohms) should be counted as short.
+
+### PCM1802 3.3V / 5V looks ok?
+
+The following needs a multimeter, both Pi and PCM1802 must be plugged onto the mainboard. 
+The PCM1802 board has an onboard regulator that converts the 5V from the USB (VBus on Pi) down to 3.3V.
+Both the converted 3.3V and 5V are available on the PCM1802 pin header.
+While clock gen is powered up, check those voltages to GND.
+
+### PCM1802 clocks look ok on PI GPIO 19/20?
+
+The following check needs a [DSO][wiki-dso].
+You may be able to use a multimeter if it has a frequency counter that goes high enough.
+- The LR clock pin ("LRCK") from the PCM1802 is connected to GPIO 20 in the PI.
+  Check that this carries a 48kHz or 46kHz clock signal.
+  Verify both ends.
+- The Bit clock pin ("BCK") from the PCM1802 is connected to GPIO 19 in the PI.
+  Check that this carries an about 3MHz clock signal.
+  Verify both ends.
+
+### Check PCM1802 fix
+
+The following needs a multimeter, the PCM1802 board can optionally be removed from the mainboard.
+Make sure both bridges `MODE0` and `MODE1` on the underside of PCM1802, are closed and connected to 3.3V.
+See above build guide for images and more details.
+
+### Check CX card mod
+
+Under good light conditions, recheck that:
+- all the components were removed correctly 
+- no solder bridge remains
+- the wiring is correct
+
+See above build guide for images and more details.
+
+### You have some other issue ...?
+
+As said initially this guide cannot cover all possible combinations of problems.
+But you could:
+- retry the debugging / troubleshooting steps to make sure you didn't over look something
+- use a different PC and/or USB port
+  - do not use a USB hub those can cause issues
+  - if you use a USB3 port, try a USB2 port
+- use a different [revision of the clock gen firmware][releases]
+- use the [info collection script][scripts] and ask for help on the domesday discord server (see instructions [here][discord])
+
 [jlcpcb]: https://jlcpcb.com
 [pcm1802-product]: https://www.ti.com/product/PCM1802
 [ali-pcm1802-search]: https://www.aliexpress.com/w/wholesale-PCM1802.html?SearchText=PCM1802
@@ -270,3 +440,7 @@ That's it you are ready for some sync RF capture!
 [vhs-decode-wiki-cxcard]: https://github.com/oyvindln/vhs-decode/wiki/CX-Cards
 [releases]: https://gitlab.com/wolfre/cxadc-clock-generator-audio-adc/-/releases
 [wiki-dso]: https://en.wikipedia.org/wiki/Digital_storage_oscilloscope
+[scripts]: ../scripts
+[discord]: https://github.com/happycube/ld-decode
+[self-clk-wave]: #installation-firmware
+[self-other-issue]: #you-have-some-other-issue-
