@@ -5,7 +5,7 @@ Ahh so you've come here to build the project, *excellent*!
 Before you start ordering and building, you should read the entire guide at least once so you know what to expect.
 You will be assembling the project from various ready made components and solder them together.
 Most components can be ordered in a finished and populated state, basically you only need to wire them up.
-But the two main PCBs of this project need to be ordered with [JLCPCB][jlcpcb] and then some SMD parts populated manually.
+But the two main PCBs of this project need to be ordered with either [JLCPCB][jlcpcb] or [PcbWay][pcbway] and then some SMD parts populated manually.
 Don't worry though all SMD parts are rather large 0805, and ordering them with [JLCPCB][jlcpcb] is fast and cheap!
 The [hardware](../hardware) section of this project includes the full [KiCad][kicad] project files, so you can also generate gerbers for a different manufacturing house.
 
@@ -45,10 +45,11 @@ So put add something like 10% additional parts, but at least one extra component
 
 ## Ordering PCBs
 
-If you choose a manufacturing house other than [JLCPCB][jlcpcb], you already know what you need.
-The [releases section][releases] of this project holds the finished gerbers for ordering directly from [JLCPCB][jlcpcb].
-When ordering, you should check [these settings (valid as of Sep. 2023)](../hardware/jlc-2023-09-order-example.png) for both boards.
-The minimum quantity (as of Sep. 2023) is 5 per PCBs, so for a single clock gen with two [CXADC][cxadc] cards, you will have some spares.
+If you choose a manufacturing house other than [JLCPCB][jlcpcb] or [PcbWay][pcbway], you already know what you need.
+The [releases section][releases] of this project holds the finished gerbers for ordering directly from [JLCPCB][jlcpcb] or [PcbWay][pcbway].
+When ordering from [JLCPCB][jlcpcb], you should check [these settings (valid as of Sep. 2023)](../hardware/jlc-2023-09-order-example.png) for both boards.
+When ordering from [PcbWay][pcbway], you should check [these settings (valid as of Nov. 2023)](../hardware/pcbway-2023-11-order-example.png) for both boards.
+The minimum quantity (as of Nov. 2023) is 5 per PCBs (on both manufacturing houses), so for a single clock gen with two [CXADC][cxadc] cards, you will have some spares.
 
 ## Building PCB 1 - VT610ex clock generator insert
 
@@ -404,6 +405,8 @@ You may be able to use a multimeter if it has a frequency counter that goes high
   Check that this carries an about 3MHz clock signal.
   Verify both ends.
 
+If the clocks are absent or heavily distorted, look for shorts / bridges on the PCM1802 pin header.
+
 ### Check PCM1802 fix
 
 The following needs a multimeter, the PCM1802 board can optionally be removed from the mainboard.
@@ -431,6 +434,7 @@ But you could:
 - use the [info collection script][scripts] and ask for help on the domesday discord server (see instructions [here][discord])
 
 [jlcpcb]: https://jlcpcb.com
+[pcbway]: https://www.pcbway.com
 [pcm1802-product]: https://www.ti.com/product/PCM1802
 [ali-pcm1802-search]: https://www.aliexpress.com/w/wholesale-PCM1802.html?SearchText=PCM1802
 [pi-pico]: https://www.raspberrypi.com/products/raspberry-pi-pico/

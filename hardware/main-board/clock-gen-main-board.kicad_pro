@@ -489,6 +489,8 @@
     ]
   ],
   "text_variables": {
+    "fab-jlc": "JLCJLCJLCJLC",
+    "fab-pcbway": "WayWayWay",
     "proj-author": "Rene Wolf",
     "proj-license": "CC BY-SA 4.0",
     "proj-title": "clock-gen adc main board",
