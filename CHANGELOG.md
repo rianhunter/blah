@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Doc - Add SMA edge connector options for clock lines
+- PCB - VT610ex clock generator adapter - Rev D (SMA edge mount improvements)
 - PCB - VT610ex clock generator adapter - Rev C (Silkscreen updates to get PcbWay support)
 - PCB - Clock generator main board - Rev C (PcbWay gerbers)
 - Doc - Add troublshooting guide
