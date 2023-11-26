@@ -7,13 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.0] - 2023-11-26
+
+### Changed
+
+- Firmware - USB / UAC2 device now registers as a line-in capture device which is more appropriate than the previous "microphone"
+
 ### Added
 
+- Firmware - Supports debug output (via a mute switch on a feature unit, in-place of the normal audio data)
 - Doc - Add SMA edge connector options for clock lines
 - PCB - VT610ex clock generator adapter - Rev D (SMA edge mount improvements)
 - PCB - VT610ex clock generator adapter - Rev C (Silkscreen updates to get PcbWay support)
 - PCB - Clock generator main board - Rev C (PcbWay gerbers)
-- Doc - Add troublshooting guide
+- Doc - Add troubleshooting guide
 - Scripts - Add a script to collect some information on a system to help trouble shoot
 
 ## [1.0.0] - 2023-10-08
@@ -21,7 +28,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Scripts - Add a script to capture all 3 streams in parallel
-- Mechanical - Add a PC bracket in 2 and 3 RCA jacks variant to accomodate PCM1802 ADC inputs and head switch signal
+- Mechanical - Add a PC bracket in 2 and 3 RCA jacks variant to accommodate PCM1802 ADC inputs and head switch signal
 - Mechanical - Add an optional mountable holder to the 3D printable box
 - Firmware - USB device descriptor now has correct SemVer in bcdDevice version field
 - Firmware - Implement PCM1802 data streaming and head switch GPIO sampling
@@ -63,7 +70,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - PCB - Clock generator main board - Rev A
 - Initial documentation
 
-[unreleased]: https://gitlab.com/wolfre/cxadc-clock-generator-audio-adc/-/compare/v1.0.0...main
+[unreleased]: https://gitlab.com/wolfre/cxadc-clock-generator-audio-adc/-/compare/v1.1.0...main
+[1.1.0]: https://gitlab.com/wolfre/cxadc-clock-generator-audio-adc/-/compare/v1.0.0...v1.1.0
 [1.0.0]: https://gitlab.com/wolfre/cxadc-clock-generator-audio-adc/-/compare/v0.2.0...v1.0.0
 [0.2.0]: https://gitlab.com/wolfre/cxadc-clock-generator-audio-adc/-/compare/v0.1.0...v0.2.0
 [0.1.0]: https://gitlab.com/wolfre/cxadc-clock-generator-audio-adc/-/compare/v0.0.1...v0.1.0

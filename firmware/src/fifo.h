@@ -21,5 +21,19 @@ usb_audio_buffer* fifo_take_filled();
 usb_audio_buffer* fifo_try_take_filled();
 void              fifo_put_filled(usb_audio_buffer* buffer);
 
+
+// control / comunicates what kind of data is expected to be filled in the packets
+typedef enum
+{
+	// PCM data coming from the ADC and head switch etc
+	fifo_mode_normal,
+	// Debug data
+	fifo_mode_debug,
+}
+fifo_mode;
+
+void              fifo_set_mode(fifo_mode mode);
+fifo_mode         fifo_get_mode();
+
 #endif
 

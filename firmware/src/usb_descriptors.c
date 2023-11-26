@@ -44,26 +44,28 @@ char const* string_desc_arr [] =
 	#define STRD_IDX_VERSION        4
 	"v" NFO_SEMVER_STR,
 
-	#define STRD_IDX_INPUT          5
-	"PCM1802",
+	#define STRD_IDX_INPUT_PCM1802  5
+	"ADC + Head switch",
+	#define STRD_IDX_FEATURE_ADUIO  6
+	"Audio Control",
 	
-	#define STRD_IDX_INPUT_20       6
+	#define STRD_IDX_INPUT_20       7
 	"CXADC-"CLOCK_GEN_CXADC_CLOCK_F0_STR,
-	#define STRD_IDX_INPUT_28       7
+	#define STRD_IDX_INPUT_28       8
 	"CXADC-"CLOCK_GEN_CXADC_CLOCK_F1_STR,
-	#define STRD_IDX_INPUT_40       8
+	#define STRD_IDX_INPUT_40       9
 	"CXADC-"CLOCK_GEN_CXADC_CLOCK_F2_STR,
-	#define STRD_IDX_INPUT_50       9
+	#define STRD_IDX_INPUT_50       10
 	"CXADC-"CLOCK_GEN_CXADC_CLOCK_F3_STR,
 	
-	#define STRD_IDX_SELECT_0       10
+	#define STRD_IDX_SELECT_0       11
 	"CXADC-Clock 0 Select",
-	#define STRD_IDX_SELECT_1       11
+	#define STRD_IDX_SELECT_1       12
 	"CXADC-Clock 1 Select",
 	
-	#define STRD_IDX_OUT_0          12
+	#define STRD_IDX_OUT_0          13
 	"CXADC-Clock 0 Out",
-	#define STRD_IDX_OUT_1          13
+	#define STRD_IDX_OUT_1          14
 	"CXADC-Clock 1 Out",
 };
 
@@ -176,6 +178,7 @@ enum
 };
 
 #define AUDIO_TERM_TYPE_IO_EMBEDDED_UNDEFINED  0x0700
+#define AUDIO_TERM_TYPE_IN_EXTERNAL_LINE       0x0603
 
 // Adapted from TUD_AUDIO_MIC_FOUR_CH_DESCRIPTOR
 uint8_t const desc_configuration[] =
@@ -189,13 +192,15 @@ uint8_t const desc_configuration[] =
 		/* Standard AC Interface Descriptor(4.7.1) */\
 		TUD_AUDIO_DESC_STD_AC(/*_itfnum*/ ITF_NUM_AUDIO_CONTROL, /*_nEPs*/ 0x00, /*_stridx*/ STRD_IDX_PRODUCT /* NOTE windows reports this as the device name, linux / ALSA uses the product everywhere */),\
 			/* Class-Specific AC Interface Header Descriptor(4.7.2) */\
-			TUD_AUDIO_DESC_CS_AC(/*_bcdADC*/ 0x0200, /*_category*/ AUDIO_FUNC_MICROPHONE, /*_totallen*/ TUD_AUDIO_DESC_CS_AC_LEN_TOTAL, /*_ctrl*/ AUDIO_CS_AS_INTERFACE_CTRL_LATENCY_POS),\
+			TUD_AUDIO_DESC_CS_AC(/*_bcdADC*/ 0x0200, /*_category*/ AUDIO_FUNC_IO_BOX, /*_totallen*/ TUD_AUDIO_DESC_CS_AC_LEN_TOTAL, /*_ctrl*/ AUDIO_CS_AS_INTERFACE_CTRL_LATENCY_POS),\
 			/* Clock Source Descriptor(4.7.2.1) */\
-			TUD_AUDIO_DESC_CLK_SRC(/*_clkid*/ USB_DESCRIPTORS_ID_CLOCK, /*_attr*/ AUDIO_CLOCK_SOURCE_ATT_INT_PRO_CLK, /*_ctrl*/ (AUDIO_CTRL_RW << AUDIO_CLOCK_SOURCE_CTRL_CLK_FRQ_POS | AUDIO_CTRL_R << AUDIO_CLOCK_SOURCE_CTRL_CLK_VAL_POS), /*_assocTerm*/ USB_DESCRIPTORS_ID_INPUT,  /*_stridx*/ 0x00),\
+			TUD_AUDIO_DESC_CLK_SRC(/*_clkid*/ USB_DESCRIPTORS_ID_CLOCK, /*_attr*/ AUDIO_CLOCK_SOURCE_ATT_INT_PRO_CLK, /*_ctrl*/ (AUDIO_CTRL_RW << AUDIO_CLOCK_SOURCE_CTRL_CLK_FRQ_POS | AUDIO_CTRL_R << AUDIO_CLOCK_SOURCE_CTRL_CLK_VAL_POS), /*_assocTerm*/ 0,  /*_stridx*/ 0x00),\
 			/* Input Terminal Descriptor(4.7.2.4) */\
-			TUD_AUDIO_DESC_INPUT_TERM(/*_termid*/ USB_DESCRIPTORS_ID_INPUT, /*_termtype*/ AUDIO_TERM_TYPE_IN_GENERIC_MIC, /*_assocTerm*/ 0, /*_clkid*/ USB_DESCRIPTORS_ID_CLOCK, /*_nchannelslogical*/ CFG_TUD_AUDIO_FUNC_1_N_CHANNELS_TX, /*_channelcfg*/ AUDIO_CHANNEL_CONFIG_NON_PREDEFINED, /*_idxchannelnames*/ 0x00, /*_ctrl*/ 0x0000, /*_stridx*/ STRD_IDX_INPUT),\
+			TUD_AUDIO_DESC_INPUT_TERM(/*_termid*/ USB_DESCRIPTORS_ID_INPUT_PCM1802, /*_termtype*/ AUDIO_TERM_TYPE_IN_EXTERNAL_LINE, /*_assocTerm*/ 0, /*_clkid*/ USB_DESCRIPTORS_ID_CLOCK, /*_nchannelslogical*/ CFG_TUD_AUDIO_FUNC_1_N_CHANNELS_TX, /*_channelcfg*/ AUDIO_CHANNEL_CONFIG_NON_PREDEFINED, /*_idxchannelnames*/ 0x00, /*_ctrl*/ 0x0000, /*_stridx*/ STRD_IDX_INPUT_PCM1802),\
+			/* Feature Unit Descriptor (4.7.2.8)*/ \
+			TUD_AUDIO_DESC_FEATURE_UNIT_THREE_CHANNEL(/*_unitid*/ USB_DESCRIPTORS_ID_FEATURE_AUDIO, /*_srcid*/ USB_DESCRIPTORS_ID_INPUT_PCM1802, /*_ctrlch0master*/ (AUDIO_CTRL_RW << AUDIO_FEATURE_UNIT_CTRL_MUTE_POS), /*_ctrlch1*/ 0, /*_ctrlch2*/ 0, /*_ctrlch3*/ 0, /*_stridx*/ STRD_IDX_FEATURE_ADUIO), \
 			/* Output Terminal Descriptor(4.7.2.5) */\
-			TUD_AUDIO_DESC_OUTPUT_TERM(/*_termid*/ USB_DESCRIPTORS_ID_OUTPUT, /*_termtype*/ AUDIO_TERM_TYPE_USB_STREAMING, /*_assocTerm*/ USB_DESCRIPTORS_ID_INPUT, /*_srcid*/ USB_DESCRIPTORS_ID_INPUT, /*_clkid*/ USB_DESCRIPTORS_ID_CLOCK, /*_ctrl*/ 0x0000, /*_stridx*/ 0x00),\
+			TUD_AUDIO_DESC_OUTPUT_TERM(/*_termid*/ USB_DESCRIPTORS_ID_OUTPUT, /*_termtype*/ AUDIO_TERM_TYPE_USB_STREAMING, /*_assocTerm*/ 0, /*_srcid*/ USB_DESCRIPTORS_ID_FEATURE_AUDIO, /*_clkid*/ USB_DESCRIPTORS_ID_CLOCK, /*_ctrl*/ 0x0000, /*_stridx*/ 0x00),\
 			\
 			TUD_AUDIO_DESC_INPUT_TERM(/*_termid*/ USB_DESCRIPTORS_ID_INPUT_20, /*_termtype*/ AUDIO_TERM_TYPE_IO_EMBEDDED_UNDEFINED, /*_assocTerm*/ 0, /*_clkid*/ USB_DESCRIPTORS_ID_CLOCK, /*_nchannelslogical*/ 1, /*_channelcfg*/ AUDIO_CHANNEL_CONFIG_NON_PREDEFINED, /*_idxchannelnames*/ 0x00, /*_ctrl*/ 0x0000, /*_stridx*/ STRD_IDX_INPUT_20),\
 			TUD_AUDIO_DESC_INPUT_TERM(/*_termid*/ USB_DESCRIPTORS_ID_INPUT_28, /*_termtype*/ AUDIO_TERM_TYPE_IO_EMBEDDED_UNDEFINED, /*_assocTerm*/ 0, /*_clkid*/ USB_DESCRIPTORS_ID_CLOCK, /*_nchannelslogical*/ 1, /*_channelcfg*/ AUDIO_CHANNEL_CONFIG_NON_PREDEFINED, /*_idxchannelnames*/ 0x00, /*_ctrl*/ 0x0000, /*_stridx*/ STRD_IDX_INPUT_28),\

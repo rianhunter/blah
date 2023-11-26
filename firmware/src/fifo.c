@@ -4,20 +4,24 @@
 #include <string.h>
 #include "fifo.h"
 #include "pico/util/queue.h"
+#include "pico/critical_section.h"
 #include "dbg.h"
 
 static usb_audio_buffer buffers[FIFO_SPACE];
 
 static queue_t pipe_empty;
 static queue_t pipe_full;
-
+static critical_section_t mode_mutex;
+static fifo_mode mode;
 
 void fifo_init()
 {
 	queue_init(&pipe_empty, sizeof(usb_audio_buffer*), FIFO_SPACE);
 	queue_init(&pipe_full, sizeof(usb_audio_buffer*), FIFO_SPACE);
+	critical_section_init(&mode_mutex);
 	
 	memset(buffers, 0, sizeof(buffers));
+	mode = fifo_mode_normal;
 	
 	for(int i=0; i<FIFO_SPACE; ++i)
 	{
@@ -68,4 +72,23 @@ void fifo_put_empty(usb_audio_buffer* buffer)
 void fifo_put_filled(usb_audio_buffer* buffer)
 {
 	queue_add_blocking(&pipe_full, &buffer);
+}
+
+void fifo_set_mode(fifo_mode new_mode)
+{
+	dbg_say("fifo_set_mode ");
+	dbg_say((new_mode == fifo_mode_debug) ? "dbg" : "normal");
+	dbg_say("\n");
+	
+	critical_section_enter_blocking(&mode_mutex);
+	mode = new_mode;
+	critical_section_exit(&mode_mutex);
+}
+
+fifo_mode fifo_get_mode()
+{
+	critical_section_enter_blocking(&mode_mutex);
+	fifo_mode ret = mode;
+	critical_section_exit(&mode_mutex);
+	return ret;
 }

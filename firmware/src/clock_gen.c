@@ -113,8 +113,9 @@ static multisynth_setup* setup_cxadc_map[] =
 static multisynth_setup* ouput0 = NULL;
 static multisynth_setup* ouput1 = NULL;
 static multisynth_setup* ouput2 = NULL;
+static bool init_success;
 
-void clock_gen_init()
+bool clock_gen_init()
 {
 	// Initialize I2C port at 100 kHz
 	i2c_init(i2c0, 100 * 1000);
@@ -130,11 +131,25 @@ void clock_gen_init()
 	gpio_pull_up(scl_pin);
 	
 	si5351_init();
-	si5351_begin(i2c0);
+	init_success = ( si5351_begin(i2c0) == ERROR_NONE ) ? true : false;
+	
+	dbg_say("si5351 init ");
+	dbg_say(init_success ? "ok" : "failed");
+	dbg_say("\n");
 	
 	ouput0 = NULL;
 	ouput1 = NULL;
 	ouput2 = NULL;
+	return init_success;
+}
+
+static bool not_initialized()
+{
+	if( init_success )
+		return false;
+	
+	dbg_say("si5351 not ready!\n");
+	return true;
 }
 
 static multisynth_setup* set_multisynth(multisynth_setup* current_config, multisynth_setup* new_config, uint8_t output)
@@ -158,6 +173,9 @@ static multisynth_setup* set_multisynth(multisynth_setup* current_config, multis
 
 void clock_gen_default()
 {
+	if( not_initialized() ) 
+		return;
+	
 	si5351_setup_pll(SI5351_PLL_A, pll_a.mult, pll_a.num, pll_a.denom);
 	si5351_setup_pll(SI5351_PLL_B, pll_b.mult, pll_b.num, pll_b.denom);
 
@@ -180,6 +198,9 @@ const uint32_t* clock_gen_get_adc_sample_rate_options(uint8_t* len)
 
 uint32_t clock_gen_get_adc_sample_rate()
 {
+	if( not_initialized() ) 
+		return 0;
+	
 	if( ouput2 == &setup_12m288hz )
 		return adc_rate_12m288hz;
 	if( ouput2 == &setup_12mhz )
@@ -195,6 +216,9 @@ uint32_t clock_gen_get_adc_sample_rate()
 
 void clock_gen_set_adc_sample_rate(uint32_t rate_hz)
 {
+	if( not_initialized() )
+		return;
+	
 	dbg_say("adc=");
 	
 	if( adc_rate_12m288hz == rate_hz)
@@ -221,6 +245,9 @@ void clock_gen_set_adc_sample_rate(uint32_t rate_hz)
 
 uint8_t clock_gen_get_cxadc_sample_rate(uint8_t output)
 {
+	if( not_initialized() ) 
+		return 0;
+	
 	if( output == 0 || output == 1 )
 	{
 		multisynth_setup* output_settings = (output == 0) ? ouput0 : ouput1;
@@ -238,6 +265,9 @@ uint8_t clock_gen_get_cxadc_sample_rate(uint8_t output)
 
 void clock_gen_set_cxadc_sample_rate(uint8_t output, uint8_t frequency_option)
 {
+	if( not_initialized() ) 
+		return;
+	
 	if( (output == 0 || output == 1) && (frequency_option < setup_cxadc_map_len))
 	{
 		multisynth_setup* new_settings = setup_cxadc_map[frequency_option];

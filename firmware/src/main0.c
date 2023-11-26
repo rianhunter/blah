@@ -16,6 +16,7 @@
 #include "main1.h"
 #include "fifo.h"
 #include "usb_descriptors.h"
+#include "global_status.h"
 
 int main(void)
 {
@@ -25,10 +26,17 @@ int main(void)
 	
 	gpio_put(led_pin, 1);
 	dbg_init();
+	global_status_init();
+	// so the most basic init is done, turn off LED until we are through with the rest
 	gpio_put(led_pin, 0);
 
-	clock_gen_init();
-	clock_gen_default();
+	bool success = clock_gen_init();
+	clock_gen_default(); // all clock gen function do nothing if init was not successful, so we can just call them safely from anywhere
+	
+	global_status_access(
+	{
+		global_status.si5351_init_success = global_status_to_boolu8(success);
+	});
 	
 	dbg_say("Running firmware v" NFO_SEMVER_STR "\n");
 	dbg_say("Build from " NFO_GIT_SHA "\n");
@@ -43,16 +51,18 @@ int main(void)
 	usb_descriptor_set_serial(serial);
 
 	tusb_init();
-	dbg_say("tusb_init()\n");
+	dbg_say("tusb_init() done\n");
 
 	while (true)
 	{
 		// tinyusb device task
 		tud_task(); 
 		
+		// t is now roughly in 250 ms
 		uint32_t t = time_us_32() >> 18;
 		
-		if( (t & 0x3) == 0 )
+		// if clock gen init is not successful then something is really wrong and we blink with about 2Hz, otherwise led is just on
+		if( (success) || ((t & 0x1) == 0) )
 		{
 			gpio_put(led_pin, 1);
 		}

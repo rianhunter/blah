@@ -30,6 +30,9 @@ static_assert((PCM_PIO_ADC0_DATA + pcm1802_index_dbg)    == PCM_PIO_ADC0_DEBUG, 
 static PIO pio;
 static uint32_t pio_program_offset;
 static uint32_t pio_sm;
+uint32_t pcm1802_out_of_sync_drops;
+uint32_t pcm1802_rch_tmo_count;
+uint32_t pcm1802_rch_tmo_value;
 
 static uint32_t setup_pio(uint32_t pin)
 {
@@ -83,6 +86,9 @@ void pcm1802_init()
 	gpio_init(PCM1802_POWER_DOWN_PIN);
 	gpio_set_dir(PCM1802_POWER_DOWN_PIN, GPIO_OUT);
 	pcm1802_power_down();
+	pcm1802_out_of_sync_drops = 0;
+	pcm1802_rch_tmo_count = 0;
+	pcm1802_rch_tmo_value = 0;
 	pcm_pio_init();
 }
 
@@ -101,10 +107,8 @@ void pcm1802_power_down()
 
 void pcm1802_rx_24bit_uac_pcm_type1(uint8_t* l_3byte, uint8_t* r_3byte)
 {
-	while(pcm1802_try_rx_24bit_uac_pcm_type1(l_3byte, r_3byte) == false);
+	while(pcm1802_try_rx_24bit_uac_pcm_type1(l_3byte, r_3byte) == false) { }
 }
-
-#define void_cast(ptr)   ((void*)(ptr))
 
 bool pcm1802_try_rx_24bit_uac_pcm_type1(uint8_t* l_3byte, uint8_t* r_3byte)
 {
@@ -115,16 +119,67 @@ bool pcm1802_try_rx_24bit_uac_pcm_type1(uint8_t* l_3byte, uint8_t* r_3byte)
 	if( ch_l & 0x01000000 )
 	{
 		// we got a sample for the right channel -> out of sync, drop sample wait for next one
-		dbg_say("pcm1802 out of sync, drop!!\n");
-		ch_l = pio_sm_get_blocking(pio, pio_sm);
+		++pcm1802_out_of_sync_drops;
+		dbg_say("pcm1802 out of sync, drop!\n");
+		return false;
 	}
 
+	// while the R sample is being decoded in the PIO, we encode the L sample
 	usb_audio_pcm24_host_to_usb(l_3byte, ch_l);
 
+	const uint32_t tmo = 0xffff; // measured actual counter values are around 150 till the next sample comes (at 46kHz)
+	uint32_t cnt = 0;
+	while( pio_sm_is_rx_fifo_empty(pio, pio_sm) )
+	{
+		++cnt;
+		if( cnt > tmo)
+		{
+			++pcm1802_rch_tmo_count;
+			dbg_say("pcm1802 tmo R!\n");
+			return false;
+		}
+	}
+	
 	uint32_t ch_r = pio_sm_get_blocking(pio, pio_sm);
 	usb_audio_pcm24_host_to_usb(r_3byte, ch_r);
 
+	pcm1802_rch_tmo_value = cnt;
 	return true;
 }
 
-#undef void_cast
+static bool wait_for_pos_edge_on_pin(uint32_t pin)
+{
+	// this takes long enough to not timeout on 46kHz which is our slowest clock line (LR clock)
+	uint32_t tmo = 0xfff;
+	
+	while( gpio_get(pin) == true )
+	{
+		--tmo;
+		if( tmo == 0)
+			return false;
+	}
+	
+	while( gpio_get(pin) == false )
+	{
+		--tmo;
+		if( tmo == 0)
+			return false;
+	}
+	
+	return true;
+}
+
+bool pcm1802_activity_on_lrck()
+{
+	return wait_for_pos_edge_on_pin(PCM_PIO_ADC0_LRCLK);
+}
+
+bool pcm1802_activity_on_bck()
+{
+	return wait_for_pos_edge_on_pin(PCM_PIO_ADC0_BITCLK);
+}
+
+bool pcm1802_activity_on_data()
+{
+	return wait_for_pos_edge_on_pin(PCM_PIO_ADC0_DATA);
+}

@@ -307,6 +307,29 @@ You can download the mentioned [blink.uf2](https://datasheets.raspberrypi.com/so
 If you flashed the blink test, make sure to re-flash the clock gen firmware.
 The guide will generally assume you have the clock gen firmware installed.
 
+### What is the Pi pico LED state?
+
+Since firmware version 1.1.0, after booting the LED can have 3 states:
+- off: early boot stage failed or power is not good
+- blinking at about 2 Hz: the Si5351 clock generator could not be found
+- on: booting finished normally
+
+### Look for shorts of 5V on the mainboard and PCM1802 board
+
+The following needs a multimeter. 
+Unplug all subboards from the mainboard, and test individually, then combined:
+- confirm no continuity between the 5V and GND on the PCM1802 board and mainboard.
+- confirm no continuity between the 5V / VBus on the Pi and GND.
+- confirm continuity on 5V / VBus across all boards.
+- confirm continuity on GND across all boards.
+
+### Check connections to Si5351
+
+The following needs a multimeter.
+- confirm no continuity between the Vin and GND on the Si5351 board.
+- confirm no continuity between the 3.3V on the Pi and GND.
+- confirm continuity on 3.3V, GND, SDA, SCL from Pi to Si5351 board.
+
 ### Is the USB device visible?
 
 This tells you whether the USB enumeration (when a USB host discovers a USB device) was successful.
@@ -318,22 +341,6 @@ Bus 002 Device 003: ID 1209:0001 Generic pid.codes Test PID
 
 If yes, it means the host can talk to the clock gen.
 If no, then the USB communication is not working, either due to an electrical problem on the connection, or a non-working firmware on the Pi pico.
-
-### Look for shorts of the 5V on the PCM1802
-
-The following needs a multimeter, and the PCM1802 board unplugged from the mainboard.
-- confirm no continuity between the 5V and GND on the PCM1802 board.
-- confirm no continuity between the 5V / VBus on the Pi and GND.
-
-Remove any shorts / solder bridges you find.
-
-### Look for shorts of the 3.3V on the Si5351
-
-The following needs a multimeter, and the Si5351 board unplugged from the mainboard.
-- confirm no continuity between the Vin and GND on the Si5351 board.
-- confirm no continuity between the 3.3V on the Pi and GND.
-
-Remove any shorts / solder bridges you find.
 
 ### Look for shorts on the mainboard
 
@@ -386,6 +393,13 @@ arecord: pcm_read:2221: read error: Input/output error
 The above generic "read error: Input/output error" error can have multiple reasons.
 But it is a good indication that no data is coming from the PCM1802 sub board to the Pi.
 
+Since firmware version 1.1.0 the audio output can be switch to a debug mode.
+Open `alsamixer`, select the clock gen sound card (F6), select the capture controls (F4), and mute "Audio Control" by pressing the *space bar*.
+When muted the text "CAPTURE" should be replaced with "---------".
+Retry the above `arecord` command, if it is successful, then there is a problem with the data from the PCM1802 subboard.
+The wav file contains a dump of the content of the global status structure found in [global_status.h][code-status].
+This may be able to tell you which lines are affected (LRCK/BCK/DATA).
+
 ### Check Si5351 output 0/1/2
 
 The following check needs a [DSO][wiki-dso].
@@ -419,6 +433,11 @@ You may be able to use a multimeter if it has a frequency counter that goes high
   Verify both ends.
 
 If the clocks are absent or heavily distorted, look for shorts / bridges on the PCM1802 pin header.
+
+Since firmware version 1.1.0 the audio output can be switch to a debug mode.
+Executing the [info collection script][scripts] will do that (debug.wav).
+This will dump the content of the global status structure found in [global_status.h][code-status].
+It contains flags that indicate activity on the three PCM1802 lines, which could help to find the problematic connection.
 
 ### Check PCM1802 fix
 
@@ -461,3 +480,4 @@ But you could:
 [discord]: https://github.com/happycube/ld-decode
 [self-clk-wave]: #installation-firmware
 [self-other-issue]: #you-have-some-other-issue-
+[code-status]: ../firmware/src/global_status.h
