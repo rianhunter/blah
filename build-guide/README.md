@@ -64,14 +64,22 @@ So you will need to build one these PCBs / adapters per [CXADC][cxadc] card you 
 - 1x 0805 SMD resistor 10K Ohm, 5% tolerance or better
 - 1x 0805 SMD capacitor 1.5 nF, 6V or greater, ceramic X5R or X7R
 - 1x 0805 SMD capacitor 10 nF, 6V or greater, ceramic X5R or X7R
-- About 50cm of RG174 coax cable.
-  This will be used to connect the adapter to the clock gen mainboard, and the exact length depends on your installation situation.
-  You can use a different type of cable here, but the RG174 is still flexible enough to be convenient to handle.
-- 1x 3x2.54mm pin header, straight (it will be mounted "lying / sideways" on the PCB)
-- 1x 3x2.54mm pin socket, straight (it will be soldered as a connector to the coax cable)
-- Some heat-shrink tube to cover the coax and pin socket
 - Thin wire in 4 colors, AWG 30 (0.25mm) to AWG 20 (0.81mm) works well
-- Double sided tape to attach the adapter PCB to the back of the CX card
+- The PCB supports two options for connection to the mainboard
+  - Either with pin header / socket and a custom made coax cable
+    - 1x 3x2.54mm pin header, straight (it will be mounted "lying / sideways" on the PCB)
+    - 1x 3x2.54mm pin socket, straight (it will be soldered as a connector to the coax cable)
+    - About 50cm of RG174 coax cable.
+      This will be used to connect the adapter to the clock gen mainboard, and the exact length depends on your installation situation.
+      You can use a different type of cable here, but the RG174 is still flexible enough to be convenient to handle.
+    - Some heat-shrink tube to cover the coax and pin socket
+    - Double sided tape to attach the adapter PCB to the back of the CX card
+  - Or via SMA edge connectors, which should be paired with another one on the Si5351A sub board
+    - 2x Female edge mounting SMA connectors (one for the adapter, and one for the mainboard / Si5351A sub board).
+      There are a number of manufacturers that produce these, but they should be about 6-7mm side-to-side, and have a 1.6-1.8 mm PCB clearance, e.g [CON-SMA-EDGE-S](https://mou.sr/3t0dMKq)
+    - 1x Male to male SMA cable with a length matching your installation requirements, e.g. [250mm 135101-03-M0.25](https://mou.sr/3Tggbf5)
+    - Thick double sided tape to attach the adapter PCB to the back of the CX card.
+      Thickness must give enough clearance for the edge mounting SMA connectors, about 2mm should be fine.
 
 First populate the SMD components on the PCB like so:
 - R1, R2 as 1K Ohm
@@ -79,14 +87,17 @@ First populate the SMD components on the PCB like so:
 - C1 1.5 nF
 - C2 10 nF
 
-Then solder the 3x pin header sideways onto the edge of the PCB.
+Then solder the 3x pin header sideways onto the edge of the PCB, or solder the edge mounting SMA connector.
 Finally solder about 10 cm (4 inches) of wire to each of the pads (XT1, XT2, GND, 3.3V).
 Use different colors per pad for easier installation.
-You should end up with something like this:
+You should end up with something like this (pin header shown, not SMA edge connector):
 
 ![adapter-revb-populated.jpg](adapter-revb-populated.jpg)
 
-Next take the desired length of RG174 coax cable and solder the 3x pin socket to one end.
+If you chose the SMA connector option, this completes the adapter board.
+
+Otherwise you now need to finish the coax cable and connection.
+So take the desired length of RG174 coax cable and solder the 3x pin socket to one end.
 Remember you can always shorten the cable later, so add some extra length here.
 The center pin is the clock signal, the other two pins are shield / ground.
 Finally with some heat shrink over it, you should end up with something like this:
@@ -104,19 +115,21 @@ Optionally a digital input pin can sample the *head switch signal* from your VCR
 ![render](../hardware/main-board/render-rev-c.png)
 
 The various sub components can be soldered / mounted on the mainboard, with only pin headers as connection.
-However adding pin sockets will enable easy component swapping later.
+However adding pin sockets will enable easy component swapping later, and greatly help with troubleshooting!
 
 **Shopping list mandatory components only** for one mainboard:
 - 1x PCB "clock-gen mainboard" probably from [JLCPCB][jlcpcb]
 - 1x [Raspberry Pi Pico][pi-pico] (wireless variant can be used, but is not needed, and offers no extra features)
 - 1x [Adafruit Si5351A Clock Generator Breakout Board][si5351-adafruit], compatible clones may be found at other places as well.
+  If you chose to use SMA edge connectors for the clock lines then the mechanical stress will be taken up by the Si5351A sub board instead of the mainboard PCB.
+  Depending on your specific installation, you should add some mechanical support here.
 - 1x PCM1802 board, unknown manufacturer but can be [found on aliexpress][ali-pcm1802-search].
 - 1x Micro USB cable to connect the Raspberry Pi Pico to your target system.
 - 2x 20x2.54mm pin header, straight (mounting the Raspberry Pi Pico)
 - 1x 9x2.54mm pin header, straight (mounting the PCM1802 board)
 - 1x 7x2.54mm pin header, straight (mounting the Si5351A board)
 - About 50cm of shielded, stereo audio cable to connect the PCM1802 stereo inputs to some connector.
-  I can recommend [SC-Cicada SO-D14](https://shop.sommercable.com/en/Cable/Bulk-Cable-Audio/Patch-Mikrofonkabel-SC-Cicada-SO-D14-200-0451.html).
+  I can recommend [SOMMER Cable SC-Cicada SO-D14](https://shop.sommercable.com/en/Cable/Bulk-Cable-Audio/Patch-Mikrofonkabel-SC-Cicada-SO-D14-200-0451.html) or the [Belden 8451](https://www.belden.com/products/cable/audio-cable/analog-audio-cable/8451).
   The exact length depends on your installation situation.
 - 2x RCA socket for stereo analog input.
   Feel free to choose a different connection type for your setup.
@@ -159,13 +172,13 @@ Make sure to install the pin header first, then run the bodge like so:
 ![pcm1802-front.jpg](pcm1802-front.jpg)
 
 Next populated the remaining pin headers, and optionally sockets, on the mainboard, Raspberry Pi and Si5351A.
-The Si5351A board possibly came with SMA edge connectors, which are not used in this guide.
-However they work just as well, and instead of later soldering the coax directly to the mainboard, you can populate and use those as well.
+The Si5351A board may have come with SMA edge connectors, which can be used to connect the clock lines to the adapter boards (check that they are the opposite of your male cables).
+So if you chose to use SMA edge connectors, then instead of later soldering the coax directly to the mainboard, you can populate and use those.
 
 ![mainboard-assembled.jpg](mainboard-assembled.jpg)
 
 Solder the stereo audio cable to the PCM1802 L and R inputs.
-Finally solder your RG174 coax cables to the clock outputs 0 and 1 on the mainboard.
+Finally solder your RG174 coax cables to the clock outputs 0 and 1 on the mainboard, or populate the SMA edge connectors on clock 0 and 1 of the Si5351A sub board.
 This completes the mandatory part, and you can move on to the next section.
 
 Optionally you can populate C1 with the 10 µF cap.
