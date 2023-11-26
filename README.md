@@ -60,9 +60,9 @@ Read on to get all the details and find out how to build one yourself.
 
 ## Building one yourself
 
-The build and installation guide can be found [over here](build-guide/README.md).
+The build and installation guide can be found [over here][build-guide].
 Have a look in the [mechanical section too](mechanical) for some (optional) 3D printable parts.
-And once you built it, check out the [scripts](scripts) folder which holds some useful tools an examples around using this project.
+And once you built it, check out the [scripts][scripts] folder which holds some useful tools an examples around using this project.
 
 ## System overview and architecture
 
@@ -127,6 +127,34 @@ And the [PCM1802][pcm1802-product] can be clocked with a 12.288 MHz, giving the 
 In ADCs [the higher the clock jitter the worse the sampling quality][jitter-paper] will be.
 So you should avoid these sampling rates if you can and only use the ones from the integer mode PLL A.
 
+## Debugging, global status and the mysterious mute switch
+
+As this project is put together from various components (main board, sub boards, etc.), quite a few things can go wrong.
+The firmware will output debugging information over the UART0 on the Pi Pico (GPIO0 / Pin1).
+So hooking up a serial adapter is a good idea when working on the code (see also [dbg.h](firmware/src/dbg.h)).
+However when just assembling the project, users may not have the option to do that, so a more practical way of obtaining debugging info is needed.
+This does not have to be all the debug output that happens everywhere, but it should be enough to find common problems.
+
+[USB UAC][wiki-usb-uac] unfortunately does not give many options to achieve that.
+There is a "Memory Requests" (chapter [5.2.7.1][usb-auc-20-spec]) which would be perfect, but there is no common user space tool available.
+User space support with regular tools is important as this is what users will have, and what the [collect-info.sh][scripts] script can use.
+So instead of writing a custom tool, we just re-use the audio data that streams from the ADC.
+But that can't be happening all the time, and the ADCs might even be non-working, so there must be a way to switch this on and off.
+This can be done with a simple mute switch on a feature unit.
+If muted debug info will be output, if un-muted (the default after boot), then actual ADC data will be streamed.
+
+![device-cxclock-alsamixer-debugmute.png](device-cxclock-alsamixer-debugmute.png)
+
+The above shows how `alsamixer` displays the on / un-muted state (can be toggled with the *space* bar).
+
+Now what is inside the debug info, you may ask?
+Well there is a global status object [global_status.h](firmware/src/global_status.h) that is updated at the relevant places in the code.
+It contains flags that indicate errors, and some other values of interest.
+This object is dumped in the audio data and streamed to the host.
+In other words, to get the debug data, just mute the stream and record a short piece of "audio" with `arecord`.
+
+Have a look at the troubleshooting section of the [build guide][build-guide] if you need help getting the system running.
+
 ## Versioning
 
 The firmware / software part is using [Semantic Versioning][semver], referring to the USB device interface.
@@ -175,3 +203,5 @@ For details see the individual *LICENSE\** files in the respective folders they 
 [spdx]: https://spdx.dev/
 [vhs-decode]: https://github.com/oyvindln/vhs-decode
 [usb-auc-20-spec]: https://www.usb.org/sites/default/files/Audio2.0_final.zip
+[scripts]: scripts
+[build-guide]: build-guide/README.md

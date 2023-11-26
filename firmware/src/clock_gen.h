@@ -5,6 +5,7 @@
 #define _CLOCK_GEN_H
 
 #include <stdint.h>
+#include <stdbool.h>
 
 #define CLOCK_GEN_CXADC_CLOCK_F0_STR  "20MHz"
 #define CLOCK_GEN_CXADC_CLOCK_F1_STR  "28.63MHz"
@@ -12,7 +13,7 @@
 #define CLOCK_GEN_CXADC_CLOCK_F3_STR  "50MHz"
 
 
-void clock_gen_init();
+bool clock_gen_init();
 void clock_gen_default();
 
 const uint32_t* clock_gen_get_adc_sample_rate_options(uint8_t* len);

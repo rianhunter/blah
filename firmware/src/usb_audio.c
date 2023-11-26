@@ -31,7 +31,7 @@ bool tud_audio_set_req_ep_cb(uint8_t rhport, tusb_control_request_t const * p_re
 	(void) channelNum; (void) ctrlSel; (void) ep;
 
 	dbg_say("set_req_ep_cb\n");
-	return false; 	// Yet not implemented
+	return false; // Not implemented
 }
 
 // Invoked when audio class specific set request received for an interface
@@ -51,7 +51,7 @@ bool tud_audio_set_req_itf_cb(uint8_t rhport, tusb_control_request_t const * p_r
 	(void) channelNum; (void) ctrlSel; (void) itf;
 
 	dbg_say("set_req_itf_cb\n");
-	return false; 	// Yet not implemented
+	return false; // Not implemented
 }
 
 // Invoked when audio class specific set request received for an entity
@@ -98,10 +98,20 @@ bool tud_audio_set_req_entity_cb(uint8_t rhport, tusb_control_request_t const * 
 			return true;
 		}
 	}
+	
+	if ( entityID == USB_DESCRIPTORS_ID_FEATURE_AUDIO  )
+	{
+		if( ctrlSel == AUDIO_FU_CTRL_MUTE )
+		{
+			uint8_t value = (uint8_t) ((audio_control_cur_1_t*) pBuff)->bCur;
+			fifo_set_mode((value == 1) ? fifo_mode_debug : fifo_mode_normal);
+			return true;
+		}
+	}
 
 	// Unknown/Unsupported control
 	TU_BREAKPOINT();
-	return false;    // Yet not implemented
+	return false; // Not implemented
 }
 
 // Invoked when audio class specific get request received for an EP
@@ -116,10 +126,8 @@ bool tud_audio_get_req_ep_cb(uint8_t rhport, tusb_control_request_t const * p_re
 
 	(void) channelNum; (void) ctrlSel; (void) ep;
 
-	//	return tud_control_xfer(rhport, p_request, &tmp, 1);
-
 	dbg_say("get_req_ep_cb\n");
-	return false; 	// Yet not implemented
+	return false; // Not implemented
 }
 
 // Invoked when audio class specific get request received for an interface
@@ -135,7 +143,7 @@ bool tud_audio_get_req_itf_cb(uint8_t rhport, tusb_control_request_t const * p_r
 	(void) channelNum; (void) ctrlSel; (void) itf;
 
 	dbg_say("req_itf_cb\n");
-	return false; 	// Yet not implemented
+	return false; // Nt implemented
 }
 
 // Invoked when audio class specific get request received for an entity
@@ -205,10 +213,23 @@ bool tud_audio_get_req_entity_cb(uint8_t rhport, tusb_control_request_t const * 
 			return tud_audio_buffer_and_schedule_control_xfer(rhport, p_request, &current, sizeof(current));
 		}
 	}
+	
+	if ( entityID == USB_DESCRIPTORS_ID_FEATURE_AUDIO )
+	{
+		if( ctrlSel == AUDIO_FU_CTRL_MUTE )
+		{
+			// usb true is 1, false is 0
+			uint8_t current = (fifo_get_mode() == fifo_mode_debug) ? 1 : 0;
+			dbg_say("fifo mode ");
+			dbg_u8(current);
+			dbg_say("\n");
+			return tud_audio_buffer_and_schedule_control_xfer(rhport, p_request, &current, sizeof(current));
+		}
+	}
 
 	dbg_say("???\n");
 	TU_BREAKPOINT();
-	return false; 	// Yet not implemented
+	return false; // Not implemented
 }
 
 static uint16_t off = 0;
@@ -235,7 +256,6 @@ bool tud_audio_tx_done_pre_load_cb(uint8_t rhport, uint8_t func_id, uint8_t ep_i
 	
 	if(audio_buffer == NULL)
 	{
-		//dbg_say("poll NULL\n");
 		tud_audio_write(NULL, 0);
 		return true;
 	}

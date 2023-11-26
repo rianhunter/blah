@@ -3,17 +3,38 @@
 # SPDX-License-Identifier: BSD-3-Clause
 # Copyright (c) 2023 Rene Wolf
 
-tmp=/var/tmp/info
-
-# create a tmp dir to collect data in
-mkdir -p $tmp
-
 # the alsa device we expect the clock gen to be
 alsadevice=hw:CARD=CXADCADCClockGe
 
-# try a 1000 sample test capture to see what happens
-arecord -D $alsadevice -c 3 -r 46875 -f S24_3LE --samples=1000 $tmp/test.wav
-echo $? > $tmp/arecord-exit
+tmp=/var/tmp/info
+# create a tmp dir to collect data in
+mkdir -p $tmp
+
+
+function debug_mute_switch
+{
+	amixer -D $alsadevice cset name='Audio Control Capture Switch' $1
+}
+
+function short_record
+{
+	local start=$(date +%s)
+	arecord -D $alsadevice -c 3 -r 46875 -f S24_3LE --samples=1000 "$1"
+	local e=$?
+	local end=$(date +%s)
+	echo "exit $e, time $(( $end - $start )) sec" > "${1}.nfo"
+}
+
+# try a 1000 sample test capture on actual adc data, to see what happens
+debug_mute_switch on
+short_record $tmp/test.wav
+
+# switch to debug output and get 1000
+debug_mute_switch off
+short_record $tmp/debug.wav
+
+# switch back to adc data
+debug_mute_switch on
 
 # The next few commands collect some general system information that needs elevated privileges
 # They mostly aim to identify troubles with usb connections or other such communication problems
