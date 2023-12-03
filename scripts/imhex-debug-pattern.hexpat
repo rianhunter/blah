@@ -2,7 +2,7 @@
 
 struct debug_info {
 	// should be 0x11223344
-    le u32 magic;
+	le u32 magic;
 
 	// true if the general startup of the si5351 clock generator chip looks fine
 	u8 si5351_init_success;

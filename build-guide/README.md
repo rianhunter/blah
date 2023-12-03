@@ -314,14 +314,19 @@ Since firmware version 1.1.0, after booting the LED can have 3 states:
 - blinking at about 2 Hz: the Si5351 clock generator could not be found
 - on: booting finished normally
 
-### Look for shorts of 5V on the mainboard and PCM1802 board
+### Look for shorts of 5V / 3.3V on the mainboard and PCM1802 / Si5351 board
 
 The following needs a multimeter. 
 Unplug all subboards from the mainboard, and test individually, then combined:
 - confirm no continuity between the 5V and GND on the PCM1802 board and mainboard.
 - confirm no continuity between the 5V / VBus on the Pi and GND.
+- confirm no continuity between the 3.3V / Vin and GND on the Si5351 board and mainboard.
 - confirm continuity on 5V / VBus across all boards.
 - confirm continuity on GND across all boards.
+
+Note both the PCM1802 and Si5351 have passive and active component on them.
+This will cause a reading of a couple 100k Ohms from any of 3.3V/5V pins to GND on the boards.
+This is normal and only if your reading is below about 1000 / 1k Ohms it should be counted as a short.
 
 ### Check connections to Si5351
 
